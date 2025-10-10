@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Wallet } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated background gradient */}
@@ -35,9 +38,10 @@ const Hero = () => {
             <Button 
               size="lg" 
               className="group relative overflow-hidden bg-gradient-to-r from-primary to-accent hover:shadow-[var(--glow-primary)] transition-all duration-300 text-lg px-8 py-6"
+              onClick={() => navigate("/dashboard")}
             >
               <Wallet className="mr-2 h-5 w-5" />
-              Connect Wallet
+              Launch App
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
             
