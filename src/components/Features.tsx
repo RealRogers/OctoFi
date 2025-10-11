@@ -1,21 +1,21 @@
-import { TrendingUp, Shield, Zap, Coins, RefreshCw, Lock } from "lucide-react";
+import { TrendingUp, Shield, Zap, Coins, RefreshCw, Lock, Pause, FileText } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const features = [
   {
-    icon: TrendingUp,
-    title: "Lending & Borrowing",
-    description: "Earn interest on your assets or borrow against your crypto holdings with competitive rates."
+    icon: Lock,
+    title: "Non-custodial",
+    description: "Users always maintain custody of their funds. Your money, your control."
   },
   {
-    icon: Coins,
-    title: "Staking Rewards",
-    description: "Stake your tokens and earn passive income with up to 25% APY on supported assets."
+    icon: Pause,
+    title: "Pausable Agent",
+    description: "The user can stop and resume the AI agent at any time."
   },
   {
-    icon: RefreshCw,
-    title: "Token Swaps",
-    description: "Trade tokens instantly across multiple DEXs with the best rates and lowest fees."
+    icon: FileText,
+    title: "Transparency",
+    description: "Access to detailed reports and performance history of your investments."
   },
   {
     icon: Shield,
@@ -28,9 +28,9 @@ const features = [
     description: "Execute transactions in seconds with our optimized blockchain infrastructure."
   },
   {
-    icon: Lock,
-    title: "Non-Custodial",
-    description: "You always maintain full control of your assets. Your keys, your crypto."
+    icon: TrendingUp,
+    title: "Yield Optimization",
+    description: "Maximize your returns with our AI-powered yield optimization strategies."
   }
 ];
 

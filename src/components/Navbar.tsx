@@ -36,12 +36,19 @@ const Navbar = () => {
             ))}
           </div>
           
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* CTA Button and User Avatar */}
+          <div className="hidden md:flex items-center gap-4">
             <Button className="bg-gradient-to-r from-primary to-accent hover:shadow-[var(--glow-primary)] transition-all duration-300">
               <Wallet className="mr-2 h-4 w-4" />
               Connect Wallet
             </Button>
+            <div className="h-9 w-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden">
+              <img 
+                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
+                alt="User Avatar" 
+                className="h-full w-full object-cover"
+              />
+            </div>
           </div>
           
           {/* Mobile menu button */}

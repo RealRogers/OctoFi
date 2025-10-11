@@ -9,25 +9,25 @@ const AgentStatus = () => {
   const navigate = useNavigate();
 
   const metrics = [
-    { label: "ROI Agente", value: "+12.4%", description: "Excelente rendimiento", color: "text-green-500" },
-    { label: "vs Hold", value: "+4.2%", description: "Superando al mercado", color: "text-blue-500" },
-    { label: "Éxito Ops", value: "87%", description: "23 de 26 operaciones", color: "text-foreground" },
-    { label: "Gas Ahorrado", value: "$145", description: "vs. ejecución manual", color: "text-foreground" }
+    { label: "Agent ROI", value: "+12.4%", description: "Excellent performance", color: "text-green-500" },
+    { label: "vs Hold", value: "+4.2%", description: "Outperforming the market", color: "text-blue-500" },
+    { label: "Success Ops", value: "87%", description: "23 of 26 operations", color: "text-foreground" },
+    { label: "Gas Saved", value: "$145", description: "vs. manual execution", color: "text-foreground" }
   ];
 
   const decisions = [
     {
-      title: "Rebalanceó 0.5 ETH → USDC",
-      time: "Hace 2 horas",
-      reason: "Detectó una alta volatilidad en ETH y movió fondos a una posición estable para mitigar el riesgo.",
-      status: "Completado",
+      title: "Rebalanced 0.5 ETH → USDC",
+      time: "2 hours ago",
+      reason: "Detected high volatility in ETH and moved funds to a stable position to mitigate risk.",
+      status: "Completed",
       gas: "$4.12"
     },
     {
-      title: "Aumentó posición USDC → Aave",
-      time: "Hace 6 horas",
-      reason: "Las tasas de interés en el pool de USDC en Aave superaron el umbral del 5%, maximizando el rendimiento.",
-      status: "Completado",
+      title: "Increased position USDC → Aave",
+      time: "6 hours ago",
+      reason: "Interest rates in the USDC pool on Aave exceeded the 5% threshold, maximizing yield.",
+      status: "Completed",
       gas: "$6.78"
     }
   ];
@@ -45,18 +45,18 @@ const AgentStatus = () => {
                     <div className="w-6 h-6 rounded-full bg-green-500 animate-pulse" />
                   </div>
                   <div>
-                    <h1 className="text-3xl font-black">AGENTE ACTIVO</h1>
-                    <p className="text-muted-foreground">Última acción: Hace 45 minutos</p>
+                    <h1 className="text-3xl font-black">AGENT ACTIVE</h1>
+                    <p className="text-muted-foreground">Last action: 45 minutes ago</p>
                   </div>
                 </div>
-                <p className="text-lg">Rebalanceó 0.3 ETH → USDC</p>
+                <p className="text-lg">Rebalanced 0.3 ETH → USDC</p>
               </div>
               <Button 
                 size="lg"
                 className="bg-gradient-to-r from-primary to-accent hover:shadow-[var(--glow-primary)]"
               >
                 <Pause className="mr-2 h-5 w-5" />
-                PAUSAR AGENTE
+                PAUSE AGENT
               </Button>
             </div>
           </CardContent>
@@ -82,7 +82,7 @@ const AgentStatus = () => {
         {/* Recent Decisions */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-black">Decisiones Recientes</h2>
+            <h2 className="text-2xl font-black">Recent Decisions</h2>
           </div>
 
           <div className="space-y-4">
@@ -93,12 +93,12 @@ const AgentStatus = () => {
                     <div className="space-y-2 flex-1">
                       <h3 className="text-xl font-bold">{decision.title}</h3>
                       <div className="text-sm text-muted-foreground">
-                        <strong>Razón:</strong> {decision.reason}
+                        <strong>Reason:</strong> {decision.reason}
                       </div>
                       <div className="flex items-center gap-4 text-sm">
                         <div className="flex items-center gap-2">
                           <CheckCircle2 className="w-4 h-4 text-green-500" />
-                          <span className="text-muted-foreground">Estado:</span>
+                          <span className="text-muted-foreground">Status:</span>
                           <span className="font-semibold">{decision.status}</span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -123,7 +123,7 @@ const AgentStatus = () => {
               className="text-primary hover:text-primary"
               onClick={() => {}}
             >
-              Ver historial completo
+              View complete history
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>

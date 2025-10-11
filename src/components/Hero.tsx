@@ -18,20 +18,19 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
           <div className="inline-block px-4 py-2 rounded-full bg-muted/50 backdrop-blur-sm border border-primary/20 mb-6">
             <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Welcome to the Future of Finance
+              Your Personal AI Agent for DeFi
             </span>
           </div>
           
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-tight">
-            Your Gateway to{" "}
+            Your Personal AI Agent for{" "}
             <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent animate-gradient">
-              Decentralized Finance
+              DeFi
             </span>
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Lend, borrow, stake, and manage your crypto assets with OctoFI. 
-            Experience seamless DeFi services in one powerful platform.
+            Autonomous yield optimization. You maintain control.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
@@ -43,6 +42,14 @@ const Hero = () => {
               <Wallet className="mr-2 h-5 w-5" />
               Launch App
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="border-primary/30 hover:border-primary hover:bg-primary/10 text-lg px-8 py-6 transition-all duration-300"
+            >
+              Ver Demo
             </Button>
             
             <Button 
