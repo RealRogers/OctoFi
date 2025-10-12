@@ -11,6 +11,7 @@ import AgentStatus from "./pages/AgentStatus";
 import AgentDashboardPage from "./pages/AgentDashboardPage";
 import Swap from "./pages/Swap";
 import Stake from "./pages/Stake";
+import StyleTest from "./pages/StyleTest";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/agent-dashboard" element={<AgentDashboardPage />} />
           <Route path="/swap" element={<Swap />} />
           <Route path="/stake" element={<Stake />} />
+          <Route path="/style-test" element={<StyleTest />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

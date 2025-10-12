@@ -1,16 +1,14 @@
-import { Card, CardContent } from "@/components/ui/card";
 import AppLayout from "@/components/AppLayout";
+import UserPositions from "@/components/organisms/UserPositions";
+import AvailablePools from "@/components/organisms/AvailablePools";
 
 const Stake = () => {
   return (
     <AppLayout>
-      <div className="max-w-2xl mx-auto">
-        <Card className="bg-card/50 backdrop-blur-sm border-border/50">
-          <CardContent className="p-12 text-center">
-            <h1 className="text-3xl font-black mb-4">Stake Assets</h1>
-            <p className="text-muted-foreground">Staking functionality coming soon...</p>
-          </CardContent>
-        </Card>
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl font-bold text-white mb-8">Stake</h1>
+        <UserPositions />
+        <AvailablePools />
       </div>
     </AppLayout>
   );

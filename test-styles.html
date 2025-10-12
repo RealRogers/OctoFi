@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Styles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --background: 220 40% 6%;
+            --foreground: 210 40% 98%;
+            --primary: 267 84% 65%;
+            --secondary: 195 92% 58%;
+        }
+        body {
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+        }
+    </style>
+</head>
+<body class="p-8">
+    <h1 class="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+        Test de Estilos
+    </h1>
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+        <p class="text-white">Si ves este texto con estilos, Tailwind funciona.</p>
+        <button class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+            Botón de Prueba
+        </button>
+    </div>
+</body>
+</html>

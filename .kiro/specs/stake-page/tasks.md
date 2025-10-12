@@ -1,0 +1,102 @@
+# Implementation Plan
+
+- [x] 1. Create PositionCard molecule component
+  - Create `/src/components/molecules/PositionCard.tsx` file
+  - Define TypeScript interface for PositionCardProps with imageUrl, tokenName, apy, stakedAmount, and rewardsEarned
+  - Import Button component from `@/components/ui/button`
+  - Implement card container with `bg-blue-900/20`, `rounded-2xl`, `p-6`, and `flex flex-col h-full` styling
+  - Add token image with `w-16 h-16 rounded-xl mb-4` styling
+  - Add token name as H3 with `text-xl font-bold text-white mb-1`
+  - Add APY display with `text-sm text-gray-400` styling
+  - Add "Monto en Staking" label and value with proper styling
+  - Add "Recompensas Ganadas" label and value with proper styling
+  - Implement footer section with `mt-auto flex items-center gap-2 justify-end`
+  - Add "Reclamar" button with secondary styling (`bg-gray-800 hover:bg-gray-700`)
+  - Add "Retirar" button with primary gradient styling (`bg-gradient-to-r from-purple-600 to-blue-600`)
+  - Add placeholder onClick handlers that log to console
+  - Ensure all buttons have minimum 44x44px touch targets
+  - Add proper ARIA labels for accessibility
+  - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 7.1, 8.1, 8.2_
+
+- [x] 2. Create PoolRow molecule component
+  - Create `/src/components/molecules/PoolRow.tsx` file
+  - Define TypeScript interface for PoolRowProps with iconUrl, assetName, apy, and totalStaked
+  - Import Button component from `@/components/ui/button`
+  - Implement row container with `grid grid-cols-4 gap-4 items-center py-4 px-6 border-t border-gray-800 first:border-t-0`
+  - Add first column with `flex items-center gap-3` containing icon and asset name
+  - Style icon as `w-10 h-10 rounded-full`
+  - Style asset name as `text-white font-medium`
+  - Add second column with APY value styled as `text-green-400 font-semibold`
+  - Add third column with TVL value styled as `text-white`
+  - Add fourth column with `flex justify-end` containing "Stake" button
+  - Style "Stake" button with primary gradient (`bg-gradient-to-r from-purple-600 to-blue-600`)
+  - Add placeholder onClick handler that logs to console
+  - Ensure button has minimum 44x44px touch target
+  - Add proper ARIA label for accessibility
+  - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 7.2, 8.3, 8.4, 8.5_
+
+- [x] 3. Create UserPositions organism component
+  - Create `/src/components/organisms/UserPositions.tsx` file
+  - Import PositionCard component
+  - Define hardcoded positions array with Ethereum and Optimism data matching requirements
+  - Implement section container with `mb-12`
+  - Add section title H2 with `text-2xl font-bold text-white mb-6` displaying "Tus Posiciones"
+  - Implement grid container with `grid grid-cols-1 md:grid-cols-2 gap-6`
+  - Map over positions array to render PositionCard components
+  - Pass appropriate props to each PositionCard (imageUrl, tokenName, apy, stakedAmount, rewardsEarned)
+  - Use `/placeholder.svg` for token images
+  - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 6.1, 6.2, 7.3_
+
+- [x] 4. Create AvailablePools organism component
+  - Create `/src/components/organisms/AvailablePools.tsx` file
+  - Import PoolRow component
+  - Define hardcoded pools array with USD Coin, Tether, and Arbitrum data matching requirements
+  - Implement section container with `mb-12`
+  - Add section title H2 with `text-2xl font-bold text-white mb-6` displaying "Pools Disponibles"
+  - Create table container with `bg-gray-900 rounded-xl overflow-hidden`
+  - Implement table header with `grid grid-cols-4 gap-4 px-6 py-4 bg-gray-950`
+  - Add column headers ("Activo", "APY", "Total Staked (TVL)") with `text-sm text-gray-400 font-medium`
+  - Leave fourth column header empty for action button alignment
+  - Map over pools array to render PoolRow components
+  - Pass appropriate props to each PoolRow (iconUrl, assetName, apy, totalStaked)
+  - Use `/placeholder.svg` for asset icons
+  - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 6.3, 6.4, 6.5, 7.4_
+
+- [x] 5. Update StakePage component
+  - Open `/src/pages/Stake.tsx` file
+  - Import UserPositions and AvailablePools organisms
+  - Remove placeholder Card and CardContent
+  - Keep AppLayout wrapper
+  - Add main container with `max-w-6xl mx-auto`
+  - Add page title H1 with `text-4xl font-bold text-white mb-8` displaying "Stake"
+  - Render UserPositions component
+  - Render AvailablePools component below UserPositions
+  - Ensure proper vertical spacing between sections
+  - _Requirements: 5.1, 5.2, 5.3, 5.4, 7.5_
+
+- [x] 6. Verify responsive design and accessibility
+  - Test component rendering on mobile viewport (< 768px)
+  - Verify position cards stack in single column on mobile
+  - Test component rendering on tablet viewport (768px - 1024px)
+  - Verify position cards display in two columns on tablet and desktop
+  - Test pools table layout on different screen sizes
+  - Verify all interactive elements have minimum 44x44px touch targets
+  - Test keyboard navigation through all buttons and interactive elements
+  - Verify focus states are visible on all interactive elements
+  - Check that ARIA labels are present on buttons
+  - Test with browser zoom at 200% to ensure readability
+  - _Requirements: 5.5, 8.6, 8.7_
+
+- [x] 7. Visual validation against design mockup
+  - Compare rendered page with provided design image
+  - Verify position card styling matches (blue-tinted background, rounded corners, padding)
+  - Check that token images, names, and APY display correctly
+  - Verify staked amounts and rewards display with proper formatting
+  - Check button styling and positioning in position cards
+  - Verify pools table header alignment with rows
+  - Check APY values display in green color
+  - Verify "Stake" buttons are properly styled and positioned
+  - Check overall spacing and layout matches design
+  - Verify typography sizes and weights match design specifications
+  - Test hover states on all buttons
+  - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 3.4, 3.5, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7_

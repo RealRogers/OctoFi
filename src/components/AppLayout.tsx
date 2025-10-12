@@ -1,8 +1,16 @@
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { Wallet, Menu, X } from "lucide-react";
+import { Wallet, Menu, X, User, Settings, LogOut } from "lucide-react";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -11,6 +19,7 @@ interface AppLayoutProps {
 const AppLayout = ({ children }: AppLayoutProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const navLinks = [
     { name: "Dashboard", href: "/dashboard" },
@@ -70,8 +79,35 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
 
-              {/* Profile Icon */}
-              <div className="hidden md:block w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent" />
+              {/* Profile Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="hidden md:flex w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent items-center justify-center hover:shadow-[var(--glow-primary)] transition-all duration-300 cursor-pointer">
+                    <User className="h-5 w-5 text-white" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate("/settings")}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Configuración</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Mi Portfolio</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/agent-dashboard")}>
+                    <span className="mr-2">🤖</span>
+                    <span>Dashboard del Agente</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-destructive">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Cerrar Sesión</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 
@@ -96,6 +132,39 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 <Wallet className="mr-2 h-4 w-4" />
                 Connect Wallet
               </Button>
+              
+              {/* Mobile Profile Menu */}
+              <div className="pt-4 mt-4 border-t border-border/50 space-y-2">
+                <div className="px-4 py-2 text-sm font-semibold text-muted-foreground">
+                  Mi Cuenta
+                </div>
+                <button
+                  onClick={() => {
+                    navigate("/settings");
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+                >
+                  <Settings className="mr-2 h-4 w-4" />
+                  Configuración
+                </button>
+                <button
+                  onClick={() => {
+                    navigate("/dashboard");
+                    setIsOpen(false);
+                  }}
+                  className="w-full flex items-center px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors"
+                >
+                  <User className="mr-2 h-4 w-4" />
+                  Mi Portfolio
+                </button>
+                <button
+                  className="w-full flex items-center px-4 py-2 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Cerrar Sesión
+                </button>
+              </div>
             </div>
           )}
         </div>
