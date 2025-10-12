@@ -1,73 +1,45 @@
-# Welcome to your Lovable project
+# Panel de Control DeFi
 
-## Project info
+Este proyecto es un panel de control para finanzas descentralizadas (DeFi) construido con tecnologías web modernas. Proporciona una interfaz de usuario para monitorear activos de criptomonedas, realizar intercambios (swaps) y gestionar agentes de trading simulados.
 
-**URL**: https://lovable.dev/projects/a687bfc4-c326-46a0-b282-ad4fb9a5e5d4
+El estado actual del proyecto es una maqueta funcional, con la interfaz de usuario completamente desarrollada y la lógica de negocio simulada en el frontend.
 
-## How can I edit this code?
+## Tecnologías Utilizadas
 
-There are several ways of editing your application.
+Este proyecto está construido con:
 
-**Use Lovable**
+- **Vite:** Como herramienta de construcción y servidor de desarrollo.
+- **React:** Como librería principal para la construcción de la interfaz de usuario.
+- **TypeScript:** Para el tipado estático y la mejora de la calidad del código.
+- **shadcn-ui:** Para el sistema de componentes de la interfaz de usuario.
+- **Tailwind CSS:** Para el estilizado de la aplicación.
+- **Vitest & React Testing Library:** Para las pruebas unitarias y de integración.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a687bfc4-c326-46a0-b282-ad4fb9a5e5d4) and start prompting.
+## Cómo Empezar
 
-Changes made via Lovable will be committed automatically to this repo.
+Para trabajar en este proyecto localmente, necesitas tener Node.js y `bun` instalados.
 
-**Use your preferred IDE**
+Sigue estos pasos:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1.  **Clona el repositorio:**
+    ```sh
+    git clone <URL_DEL_REPOSITORIO>
+    cd <NOMBRE_DEL_PROYECTO>
+    ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+2.  **Instala las dependencias:**
+    ```sh
+    bun install
+    ```
 
-Follow these steps:
+3.  **Inicia el servidor de desarrollo:**
+    Esto iniciará la aplicación en modo de desarrollo con recarga automática.
+    ```sh
+    bun run dev
+    ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/a687bfc4-c326-46a0-b282-ad4fb9a5e5d4) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+4.  **Ejecuta las pruebas:**
+    Para correr el conjunto de pruebas automatizadas, usa:
+    ```sh
+    bun run test
+    ```
