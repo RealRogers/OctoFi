@@ -1,28 +1,73 @@
-import { useState } from "react";
 import { ArrowUpDown, ChevronDown, Coins } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const swapSchema = z.object({
+  fromAmount: z.string().refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, {
+    message: "Enter a valid amount",
+  }),
+  toAmount: z.string(),
+});
+
+type SwapFormValues = z.infer<typeof swapSchema>;
 
 interface SwapInterfaceProps {
+  /** Optional class name for custom styling. */
   className?: string;
 }
 
-interface SwapState {
-  fromAmount: string;
-  toAmount: string;
-}
-
+/**
+ * Renders the main user interface for token swapping.
+ * It includes form handling for "from" and "to" amounts, simulated price calculation,
+ * and input validation using Zod and React Hook Form.
+ *
+ * @param {SwapInterfaceProps} props - The component props.
+ * @returns {JSX.Element} The rendered swap interface component.
+ */
 const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
-  // State management
-  const [fromAmount, setFromAmount] = useState<string>("");
-  const [toAmount, setToAmount] = useState<string>("0.0");
+  const {
+    register,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SwapFormValues>({
+    resolver: zodResolver(swapSchema),
+    defaultValues: {
+      fromAmount: "",
+      toAmount: "0.0",
+    },
+  });
 
-  // Handler functions
+  const fromAmount = watch("fromAmount");
+  const toAmount = watch("toAmount");
+
+  /**
+   * Handles form submission. Logs the validated data to the console.
+   * In a real application, this would trigger the swap transaction.
+   * @param {SwapFormValues} data - The validated form data.
+   */
+  const onSubmit = (data: SwapFormValues) => {
+    console.log("Swap submitted with data:", data);
+  };
+
+  /**
+   * Handles changes to the "from" amount input field.
+   * It validates the input to allow only numeric values and updates the "to" amount
+   * based on a simulated exchange rate.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The input change event.
+   */
   const handleFromAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Allow only numbers and decimal point
-    if (value === "" || /^\d*\.?\d*$/.test(value)) {
-      setFromAmount(value);
-      // Note: Price calculation logic will be added in future iterations
-      // For now, toAmount remains "0.0"
+    if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
+      setValue("fromAmount", value, { shouldValidate: true });
+      const numericValue = parseFloat(value);
+      if (!isNaN(numericValue)) {
+        setValue("toAmount", (numericValue * 1.5).toFixed(2));
+      } else {
+        setValue("toAmount", "0.0");
+      }
     }
   };
 
@@ -63,11 +108,10 @@ const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
               <input
                 type="text"
                 inputMode="decimal"
-                value={fromAmount}
-                onChange={handleFromAmountChange}
                 placeholder="0.0"
                 className="bg-transparent text-3xl sm:text-4xl font-bold text-white outline-none w-full placeholder:text-gray-700 focus:ring-0"
                 aria-label="Amount to pay"
+                {...register("fromAmount", { onChange: handleFromAmountChange })}
               />
               
               {/* Token Selector */}
@@ -90,8 +134,13 @@ const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
               </button>
             </div>
             
-            {/* USD Value */}
-            <div className="text-sm text-gray-500">$0.00</div>
+            {/* USD Value & Error Message */}
+            <div className="flex justify-between items-center">
+              <div className="text-sm text-gray-500">$0.00</div>
+              {errors.fromAmount && (
+                <span className="text-sm text-red-500">{errors.fromAmount.message}</span>
+              )}
+            </div>
           </div>
           
           {/* Balance Footer */}
@@ -173,12 +222,15 @@ const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
         </div>
 
         {/* Swap Action Button */}
-        <button 
-          className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold py-4 rounded-xl hover:opacity-90 transition-opacity cursor-pointer min-h-[44px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-          aria-label="Execute swap"
-        >
-          Swap
-        </button>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold py-4 rounded-xl hover:opacity-90 transition-opacity cursor-pointer min-h-[44px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+            aria-label="Execute swap"
+          >
+            Swap
+          </button>
+        </form>
       </div>
     </div>
   );
