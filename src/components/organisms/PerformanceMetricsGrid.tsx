@@ -11,7 +11,7 @@ const PerformanceMetricsGrid = () => {
     {
       title: "vs Hold",
       value: "+4.2%",
-      subtext: "Superando al mercado",
+      subtext: "Outperforming the market",
       valueColor: "blue" as const
     },
     {

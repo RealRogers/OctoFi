@@ -16,12 +16,14 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
       <div className="container px-4 mx-auto">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <h1 className="text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              OctoFI
-            </h1>
+            <img 
+              src="/OctoFi-Logo.png" 
+              alt="OctoFi Logo" 
+              className="h-16 w-auto object-contain"
+            />
           </div>
           
           {/* Desktop Navigation */}

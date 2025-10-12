@@ -24,11 +24,11 @@ const AvailablePools: React.FC = () => {
 
   return (
     <section className="mb-12">
-      <h2 className="text-2xl font-bold text-white mb-6">Pools Disponibles</h2>
+      <h2 className="text-2xl font-bold text-white mb-6">Available Pools</h2>
       <div className="bg-gray-900 rounded-xl overflow-hidden">
         {/* Table Header */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 px-6 py-4 bg-gray-950">
-          <div className="text-sm text-gray-400 font-medium col-span-2 sm:col-span-1">Activo</div>
+          <div className="text-sm text-gray-400 font-medium col-span-2 sm:col-span-1">Asset</div>
           <div className="text-sm text-gray-400 font-medium">APY</div>
           <div className="text-sm text-gray-400 font-medium">Total Staked (TVL)</div>
           <div className="hidden sm:block"></div>

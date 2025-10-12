@@ -27,7 +27,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/asset/:symbol" element={<AssetDetail />} />
-            <Route path="/settings"={<Settings />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/agent-status" element={<AgentStatus />} />
             <Route path="/agent-dashboard" element={<AgentDashboardPage />} />
             <Route path="/swap" element={<Swap />} />

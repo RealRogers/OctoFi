@@ -39,11 +39,11 @@ const PositionCard: React.FC<PositionCardProps> = ({
       {/* Middle Section */}
       <div className="mt-6">
         <div className="mb-3">
-          <div className="text-sm text-gray-400 mb-1">Monto en Staking</div>
+          <div className="text-sm text-gray-400 mb-1">Staked Amount</div>
           <div className="text-lg font-semibold text-white">{stakedAmount}</div>
         </div>
         <div>
-          <div className="text-sm text-gray-400 mb-1">Recompensas Ganadas</div>
+          <div className="text-sm text-gray-400 mb-1">Rewards Earned</div>
           <div className="text-lg font-semibold text-white">{rewardsEarned}</div>
         </div>
       </div>
@@ -55,14 +55,14 @@ const PositionCard: React.FC<PositionCardProps> = ({
           className="bg-gray-800 hover:bg-gray-700 text-white min-h-[44px] min-w-[44px] transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-blue-900/20"
           aria-label={`Claim rewards for ${tokenName}`}
         >
-          Reclamar
+          Claim
         </Button>
         <Button
           onClick={handleWithdraw}
           className="bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90 text-white min-h-[44px] min-w-[44px] transition-opacity focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-blue-900/20"
           aria-label={`Withdraw ${tokenName}`}
         >
-          Retirar
+          Withdraw
         </Button>
       </div>
     </div>

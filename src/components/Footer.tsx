@@ -35,9 +35,16 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
           {/* Brand */}
           <div className="lg:col-span-2 space-y-4">
-            <h3 className="text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              OctoFI
-            </h3>
+            <div className="flex items-center">
+              <img 
+                src="/OctoFi-Logo.png" 
+                alt="OctoFi Logo" 
+                className="h-12 w-auto object-contain mr-2"
+              />
+              <h3 className="text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                OctoFi
+              </h3>
+            </div>
             <p className="text-muted-foreground max-w-xs">
               The future of decentralized finance. Secure, transparent, and accessible to everyone.
             </p>

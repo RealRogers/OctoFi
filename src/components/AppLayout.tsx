@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ConnectWalletButton } from "@/components/shared/ConnectWalletButton";
+import Footer from "@/components/Footer";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -37,12 +38,14 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
         <div className="container px-4 mx-auto">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center mr-3">
-                <span className="text-sm font-black">O</span>
-              </div>
+              <img 
+                src="/OctoFi-Logo.png" 
+                alt="OctoFi Logo" 
+                className="h-16 w-auto object-contain mr-2"
+              />
               <h1 className="text-xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                 OctoFi
               </h1>
@@ -85,24 +88,24 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => navigate("/settings")}>
                     <Settings className="mr-2 h-4 w-4" />
-                    <span>Configuración</span>
+                    <span>Settings</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate("/dashboard")}>
                     <User className="mr-2 h-4 w-4" />
-                    <span>Mi Portfolio</span>
+                    <span>My Portfolio</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate("/agent-dashboard")}>
                     <span className="mr-2">🤖</span>
-                    <span>Dashboard del Agente</span>
+                    <span>Agent Dashboard</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="text-destructive">
                     <LogOut className="mr-2 h-4 w-4" />
-                    <span>Cerrar Sesión</span>
+                    <span>Sign Out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -131,7 +134,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               {/* Mobile Profile Menu */}
               <div className="pt-4 mt-4 border-t border-border/50 space-y-2">
                 <div className="px-4 py-2 text-sm font-semibold text-muted-foreground">
-                  Mi Cuenta
+                  My Account
                 </div>
                 <button
                   onClick={() => {
@@ -141,7 +144,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                   className="w-full flex items-center px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors"
                 >
                   <Settings className="mr-2 h-4 w-4" />
-                  Configuración
+                  Settings
                 </button>
                 <button
                   onClick={() => {
@@ -151,13 +154,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                   className="w-full flex items-center px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors"
                 >
                   <User className="mr-2 h-4 w-4" />
-                  Mi Portfolio
+                  My Portfolio
                 </button>
                 <button
                   className="w-full flex items-center px-4 py-2 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
-                  Cerrar Sesión
+                  Sign Out
                 </button>
               </div>
             </div>
@@ -166,11 +169,14 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       </nav>
 
       {/* Main Content */}
-      <main className="pt-24 pb-12">
+      <main className="pt-28 pb-12">
         <div className="container px-4 mx-auto">
           {children}
         </div>
       </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

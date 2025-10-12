@@ -14,8 +14,17 @@ const Hero = () => {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] animate-pulse delay-1000" />
       
-      <div className="container relative z-10 px-4 mx-auto text-center">
+      <div className="container relative z-10 px-4 mx-auto text-center pt-20">
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+          {/* Logo */}
+          <div className="flex justify-center mb-12">
+            <img 
+              src="/OctoFi-Logo.png" 
+              alt="OctoFi Logo" 
+              className="h-24 w-auto md:h-32 lg:h-40 object-contain"
+            />
+          </div>
+          
           <div className="inline-block px-4 py-2 rounded-full bg-muted/50 backdrop-blur-sm border border-primary/20 mb-6">
             <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Your Personal AI Agent for DeFi
@@ -49,7 +58,7 @@ const Hero = () => {
               variant="outline"
               className="border-primary/30 hover:border-primary hover:bg-primary/10 text-lg px-8 py-6 transition-all duration-300"
             >
-              Ver Demo
+              View Demo
             </Button>
             
             <Button 

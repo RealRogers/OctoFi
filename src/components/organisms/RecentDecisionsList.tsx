@@ -3,24 +3,28 @@ import DecisionCard from "@/components/molecules/DecisionCard";
 const RecentDecisionsList = () => {
   const decisions = [
     {
-      title: "Rebalanceó 0.5 ETH → USDC",
-      reason: "Detectó una alta volatilidad en ETH y movió fondos a una posición estable para mitigar el riesgo.",
-      timestamp: "Hace 2 horas",
-      status: "Completado",
-      gasFee: "$4.12"
+      title: "Rebalanced 0.5 ETH → USDC",
+      reason: "Detected high volatility in ETH and moved funds to a stable position to mitigate risk.",
+      timestamp: "2 hours ago",
+      status: "Completed",
+      gasFee: "$4.12",
+      aiReasoning: "I detected high volatility in ETH and moved funds to a stable position to mitigate imminent market risk.",
+      keyTriggers: ["Volatility: HIGH", "Stochastic RSI: 89"]
     },
     {
-      title: "Aumentó posición USDC → Aave",
-      reason: "Las tasas de interés en el pool de USDC en Aave superaron el umbral del 5%, maximizando el rendimiento.",
-      timestamp: "Hace 6 horas",
-      status: "Completado",
-      gasFee: "$6.78"
+      title: "Increased USDC → Aave position",
+      reason: "Interest rates in the USDC pool on Aave exceeded the 5% threshold, maximizing yield.",
+      timestamp: "6 hours ago",
+      status: "Completed",
+      gasFee: "$6.78",
+      aiReasoning: "Interest rates in the USDC pool on Aave exceeded the 5% threshold, maximizing stable capital yield.",
+      keyTriggers: ["Aave APY > 5%", "Pool Liquidity: OPTIMAL"]
     }
   ];
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-bold text-white">Decisiones Recientes</h2>
+      <h2 className="text-xl font-bold text-white">Recent Decisions</h2>
       
       <div className="space-y-4">
         {decisions.map((decision, index) => (
@@ -31,6 +35,8 @@ const RecentDecisionsList = () => {
             timestamp={decision.timestamp}
             status={decision.status}
             gasFee={decision.gasFee}
+            aiReasoning={decision.aiReasoning}
+            keyTriggers={decision.keyTriggers}
           />
         ))}
       </div>
@@ -40,7 +46,7 @@ const RecentDecisionsList = () => {
           href="#" 
           className="text-primary hover:text-primary/80 text-sm font-medium transition-colors"
         >
-          Ver historial completo →
+          View complete history →
         </a>
       </div>
     </div>

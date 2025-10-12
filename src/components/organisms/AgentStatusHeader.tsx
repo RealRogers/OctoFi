@@ -8,13 +8,13 @@ const AgentStatusHeader = () => {
       <div className="flex items-center gap-4">
         <StatusIndicator isActive={true} />
         <div>
-          <h1 className="text-2xl font-bold text-white">AGENTE ACTIVO</h1>
+          <h1 className="text-2xl font-bold text-white">ACTIVE AGENT</h1>
           <div className="text-sm text-gray-400 mt-1">
-            <span>Última acción: </span>
-            <span className="text-gray-300">Hace 45 minutos</span>
+            <span>Last action: </span>
+            <span className="text-gray-300">45 minutes ago</span>
           </div>
           <div className="text-sm text-gray-300 mt-1">
-            Rebalanceó 0.3 ETH → USDC
+            Rebalanced 0.3 ETH → USDC
           </div>
         </div>
       </div>
@@ -24,7 +24,7 @@ const AgentStatusHeader = () => {
         className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-medium px-6 py-2 flex items-center gap-2"
       >
         <Pause className="h-4 w-4" />
-        PAUSAR AGENTE
+        PAUSE AGENT
       </Button>
     </div>
   );

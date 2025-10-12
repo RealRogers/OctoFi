@@ -17,24 +17,24 @@ const Settings = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 4;
   
-  // Step 1 - Configuración Básica
-  const [name, setName] = useState("Mi Agente");
+  // Step 1 - Basic Configuration
+  const [name, setName] = useState("My Agent");
   const [riskLevel, setRiskLevel] = useState("medium");
   const [autoRebalance, setAutoRebalance] = useState(true);
   
-  // Step 2 - Límites de Operación
+  // Step 2 - Operation Limits
   const [maxPerTransaction, setMaxPerTransaction] = useState([1000]);
   const [maxPerDay, setMaxPerDay] = useState([5000]);
   const [minToOperate, setMinToOperate] = useState([50]);
   
-  // Step 3 - Notificaciones
+  // Step 3 - Notifications
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(true);
   const [notifyOnTrade, setNotifyOnTrade] = useState(true);
   const [notifyOnDeposit, setNotifyOnDeposit] = useState(true);
   const [notifyOnWithdraw, setNotifyOnWithdraw] = useState(true);
   
-  // Step 4 - Estrategia
+  // Step 4 - Strategy
   const [strategy, setStrategy] = useState("balanced");
   const [rebalanceFrequency, setRebalanceFrequency] = useState("weekly");
   const [focusAssets, setFocusAssets] = useState(["ETH", "BTC"]);
@@ -63,7 +63,7 @@ const Settings = () => {
         {/* Progress Indicator */}
         <div className="space-y-4">
           <div className="flex items-center justify-center">
-            <div className="text-sm text-muted-foreground">Step {currentStep} de {totalSteps}</div>
+            <div className="text-sm text-muted-foreground">Step {currentStep} of {totalSteps}</div>
           </div>
           <div className="flex items-center gap-2">
             {Array.from({ length: totalSteps }).map((_, i) => (
@@ -80,51 +80,51 @@ const Settings = () => {
         {/* Content */}
         <Card className="bg-card/50 backdrop-blur-sm border-border/50">
           <CardContent className="p-8 md:p-12 space-y-12">
-            {/* Step 1: Configuración Básica */}
+            {/* Step 1: Basic Configuration */}
             {currentStep === 1 && (
               <>
                 <div className="text-center space-y-2">
-                  <h1 className="text-4xl font-black">Configuración Básica</h1>
-                  <p className="text-muted-foreground">Personaliza tu agente de inversión</p>
+                  <h1 className="text-4xl font-black">Basic Configuration</h1>
+                  <p className="text-muted-foreground">Customize your investment agent</p>
                 </div>
                 
                 <div className="space-y-8">
-                  {/* Nombre del Agente */}
+                  {/* Agent Name */}
                   <div className="space-y-4">
-                    <Label htmlFor="agent-name" className="font-semibold">Nombre de tu agente</Label>
+                    <Label htmlFor="agent-name" className="font-semibold">Your agent's name</Label>
                     <Input 
                       id="agent-name" 
                       value={name} 
                       onChange={(e) => setName(e.target.value)} 
-                      placeholder="Mi Agente Inteligente" 
+                      placeholder="My Smart Agent" 
                       className="bg-muted/50"
                     />
                   </div>
                   
-                  {/* Nivel de Riesgo */}
+                  {/* Risk Level */}
                   <div className="space-y-4">
-                    <Label className="font-semibold">Nivel de riesgo</Label>
+                    <Label className="font-semibold">Risk level</Label>
                     <RadioGroup value={riskLevel} onValueChange={setRiskLevel} className="flex gap-4">
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="low" id="risk-low" />
-                        <Label htmlFor="risk-low">Bajo</Label>
+                        <Label htmlFor="risk-low">Low</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="medium" id="risk-medium" />
-                        <Label htmlFor="risk-medium">Medio</Label>
+                        <Label htmlFor="risk-medium">Medium</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="high" id="risk-high" />
-                        <Label htmlFor="risk-high">Alto</Label>
+                        <Label htmlFor="risk-high">High</Label>
                       </div>
                     </RadioGroup>
                   </div>
                   
-                  {/* Auto-rebalanceo */}
+                  {/* Auto-rebalancing */}
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label className="font-semibold">Auto-rebalanceo</Label>
-                      <p className="text-sm text-muted-foreground">Mantén tu portafolio optimizado automáticamente</p>
+                      <Label className="font-semibold">Auto-rebalancing</Label>
+                      <p className="text-sm text-muted-foreground">Keep your portfolio optimized automatically</p>
                     </div>
                     <Switch checked={autoRebalance} onCheckedChange={setAutoRebalance} />
                   </div>
@@ -132,18 +132,18 @@ const Settings = () => {
               </>
             )}
             
-            {/* Step 2: Límites de Operación */}
+            {/* Step 2: Operation Limits */}
             {currentStep === 2 && (
               <>
                 <div className="text-center space-y-2">
-                  <h1 className="text-4xl font-black">Límites de Operación</h1>
-                  <p className="text-muted-foreground">Estos límites protegen tu capital</p>
+                  <h1 className="text-4xl font-black">Operation Limits</h1>
+                  <p className="text-muted-foreground">These limits protect your capital</p>
                 </div>
 
                 {/* Max Per Transaction */}
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <label className="font-semibold">Máximo por transacción</label>
+                    <label className="font-semibold">Maximum per transaction</label>
                     <div className="px-4 py-2 rounded-lg bg-muted font-bold">
                       ${maxPerTransaction[0].toLocaleString()}
                     </div>
@@ -165,7 +165,7 @@ const Settings = () => {
                 {/* Max Per Day */}
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <label className="font-semibold">Máximo por día</label>
+                    <label className="font-semibold">Maximum per day</label>
                     <div className="px-4 py-2 rounded-lg bg-muted font-bold">
                       ${maxPerDay[0].toLocaleString()}
                     </div>
@@ -187,7 +187,7 @@ const Settings = () => {
                 {/* Min To Operate */}
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <label className="font-semibold">Mínimo para operar</label>
+                    <label className="font-semibold">Minimum to operate</label>
                     <div className="px-4 py-2 rounded-lg bg-muted font-bold">
                       ${minToOperate[0].toLocaleString()}
                     </div>
@@ -205,62 +205,62 @@ const Settings = () => {
                     <span className="text-sm text-muted-foreground">$500</span>
                   </div>
                   <p className="text-sm text-muted-foreground text-center">
-                    Evita gas fees desproporcionados
+                    Avoid disproportionate gas fees
                   </p>
                 </div>
               </>
             )}
             
-            {/* Step 3: Notificaciones */}
+            {/* Step 3: Notifications */}
             {currentStep === 3 && (
               <>
                 <div className="text-center space-y-2">
-                  <h1 className="text-4xl font-black">Notificaciones</h1>
-                  <p className="text-muted-foreground">Mantente informado sobre tus inversiones</p>
+                  <h1 className="text-4xl font-black">Notifications</h1>
+                  <p className="text-muted-foreground">Stay informed about your investments</p>
                 </div>
                 
                 <div className="space-y-8">
-                  {/* Canales de Notificación */}
+                  {/* Notification Channels */}
                   <div className="space-y-4">
-                    <Label className="font-semibold">Canales de notificación</Label>
+                    <Label className="font-semibold">Notification channels</Label>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Bell className="h-5 w-5 text-muted-foreground" />
-                          <span>Notificaciones por email</span>
+                          <span>Email notifications</span>
                         </div>
                         <Switch checked={emailNotifications} onCheckedChange={setEmailNotifications} />
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Bell className="h-5 w-5 text-muted-foreground" />
-                          <span>Notificaciones push</span>
+                          <span>Push notifications</span>
                         </div>
                         <Switch checked={pushNotifications} onCheckedChange={setPushNotifications} />
                       </div>
                     </div>
                   </div>
                   
-                  {/* Eventos para Notificar */}
+                  {/* Events to Notify */}
                   <div className="space-y-4">
-                    <Label className="font-semibold">Notificarme cuando</Label>
+                    <Label className="font-semibold">Notify me when</Label>
                     <div className="space-y-4">
                       <div className="flex items-center space-x-2">
                         <Checkbox id="notify-trade" checked={notifyOnTrade} onCheckedChange={setNotifyOnTrade} />
                         <label htmlFor="notify-trade" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                          Se realice una operación
+                          A trade is executed
                         </label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox id="notify-deposit" checked={notifyOnDeposit} onCheckedChange={setNotifyOnDeposit} />
                         <label htmlFor="notify-deposit" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                          Se realice un depósito
+                          A deposit is made
                         </label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox id="notify-withdraw" checked={notifyOnWithdraw} onCheckedChange={setNotifyOnWithdraw} />
                         <label htmlFor="notify-withdraw" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                          Se realice un retiro
+                          A withdrawal is made
                         </label>
                       </div>
                     </div>
@@ -269,50 +269,50 @@ const Settings = () => {
               </>
             )}
             
-            {/* Step 4: Estrategia */}
+            {/* Step 4: Strategy */}
             {currentStep === 4 && (
               <>
                 <div className="text-center space-y-2">
-                  <h1 className="text-4xl font-black">Estrategia</h1>
-                  <p className="text-muted-foreground">Define cómo operará tu agente</p>
+                  <h1 className="text-4xl font-black">Strategy</h1>
+                  <p className="text-muted-foreground">Define how your agent will operate</p>
                 </div>
                 
                 <div className="space-y-8">
-                  {/* Estrategia de Inversión */}
+                  {/* Investment Strategy */}
                   <div className="space-y-4">
-                    <Label className="font-semibold">Estrategia de inversión</Label>
+                    <Label className="font-semibold">Investment strategy</Label>
                     <Select value={strategy} onValueChange={setStrategy}>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Selecciona una estrategia" />
+                        <SelectValue placeholder="Select a strategy" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="conservative">Conservadora</SelectItem>
-                        <SelectItem value="balanced">Balanceada</SelectItem>
-                        <SelectItem value="growth">Crecimiento</SelectItem>
-                        <SelectItem value="aggressive">Agresiva</SelectItem>
+                        <SelectItem value="conservative">Conservative</SelectItem>
+                        <SelectItem value="balanced">Balanced</SelectItem>
+                        <SelectItem value="growth">Growth</SelectItem>
+                        <SelectItem value="aggressive">Aggressive</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   
-                  {/* Frecuencia de Rebalanceo */}
+                  {/* Rebalancing Frequency */}
                   <div className="space-y-4">
-                    <Label className="font-semibold">Frecuencia de rebalanceo</Label>
+                    <Label className="font-semibold">Rebalancing frequency</Label>
                     <Select value={rebalanceFrequency} onValueChange={setRebalanceFrequency}>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Selecciona una frecuencia" />
+                        <SelectValue placeholder="Select a frequency" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="daily">Diario</SelectItem>
-                        <SelectItem value="weekly">Semanal</SelectItem>
-                        <SelectItem value="monthly">Mensual</SelectItem>
-                        <SelectItem value="quarterly">Trimestral</SelectItem>
+                        <SelectItem value="daily">Daily</SelectItem>
+                        <SelectItem value="weekly">Weekly</SelectItem>
+                        <SelectItem value="monthly">Monthly</SelectItem>
+                        <SelectItem value="quarterly">Quarterly</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   
-                  {/* Activos Preferidos */}
+                  {/* Preferred Assets */}
                   <div className="space-y-4">
-                    <Label className="font-semibold">Activos preferidos</Label>
+                    <Label className="font-semibold">Preferred assets</Label>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="flex items-center space-x-2">
                         <Checkbox id="asset-btc" checked={focusAssets.includes("BTC")} 
@@ -363,13 +363,13 @@ const Settings = () => {
                 className="flex-1"
                 onClick={handleBack}
               >
-                {currentStep === 1 ? "Cancelar" : "Atrás"}
+                {currentStep === 1 ? "Cancel" : "Back"}
               </Button>
               <Button
                 className="flex-1 bg-gradient-to-r from-primary to-accent"
                 onClick={handleNext}
               >
-                {currentStep === totalSteps ? "Finalizar" : "Siguiente"}
+                {currentStep === totalSteps ? "Finish" : "Next"}
               </Button>
             </div>
           </CardContent>
