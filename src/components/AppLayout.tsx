@@ -14,6 +14,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   const navLinks = [
     { name: "Dashboard", href: "/dashboard" },
+    { name: "Agent Dashboard", href: "/agent-dashboard" },
     { name: "Swap", href: "/swap" },
     { name: "Stake", href: "/stake" },
     { name: "Settings", href: "/settings" }
