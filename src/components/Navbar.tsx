@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Wallet, Menu } from "lucide-react";
 import { useState } from "react";
+import { ConnectWalletButton } from "@/components/shared/ConnectWalletButton";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,10 +39,7 @@ const Navbar = () => {
           
           {/* CTA Button and User Avatar */}
           <div className="hidden md:flex items-center gap-4">
-            <Button className="bg-gradient-to-r from-primary to-accent hover:shadow-[var(--glow-primary)] transition-all duration-300">
-              <Wallet className="mr-2 h-4 w-4" />
-              Connect Wallet
-            </Button>
+            <ConnectWalletButton />
             <div className="h-9 w-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden">
               <img 
                 src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
@@ -73,10 +71,7 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
-            <Button className="w-full bg-gradient-to-r from-primary to-accent">
-              <Wallet className="mr-2 h-4 w-4" />
-              Connect Wallet
-            </Button>
+            <ConnectWalletButton className="w-full bg-gradient-to-r from-primary to-accent" />
           </div>
         )}
       </div>

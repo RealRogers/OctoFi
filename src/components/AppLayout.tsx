@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ConnectWalletButton } from "@/components/shared/ConnectWalletButton";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -66,10 +67,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
             {/* Wallet Button */}
             <div className="flex items-center gap-4">
-              <Button className="hidden md:flex bg-gradient-to-r from-primary to-accent hover:shadow-[var(--glow-primary)] transition-all duration-300">
-                <Wallet className="mr-2 h-4 w-4" />
-                Connect Wallet
-              </Button>
+              <ConnectWalletButton className="hidden md:flex bg-gradient-to-r from-primary to-accent hover:shadow-[var(--glow-primary)] transition-all duration-300" />
 
               {/* Mobile menu button */}
               <button
@@ -128,10 +126,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                   {link.name}
                 </Link>
               ))}
-              <Button className="w-full bg-gradient-to-r from-primary to-accent mt-4">
-                <Wallet className="mr-2 h-4 w-4" />
-                Connect Wallet
-              </Button>
+              <ConnectWalletButton className="w-full bg-gradient-to-r from-primary to-accent mt-4" />
               
               {/* Mobile Profile Menu */}
               <div className="pt-4 mt-4 border-t border-border/50 space-y-2">
