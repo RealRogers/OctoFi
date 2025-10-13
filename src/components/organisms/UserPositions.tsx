@@ -20,7 +20,7 @@ const UserPositions: React.FC = () => {
 
   return (
     <section className="mb-12">
-      <h2 className="text-2xl font-bold text-white mb-6">Your Positions</h2>
+      <h2 className="text-2xl font-bold text-foreground mb-6">Your Positions</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {positions.map((position, index) => (
           <PositionCard

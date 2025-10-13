@@ -13,7 +13,6 @@ const Index = () => {
       <Hero />
       <LivingAICarousel />
       <Features />
-
       <HowItWorks />
       <CTA />
       <Footer />

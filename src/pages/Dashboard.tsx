@@ -3,11 +3,54 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { assets, chartData } from "@/lib/mockData";
+import { Suspense, lazy } from "react";
+
+// Lazy load recharts to prevent blocking
+const ChartComponent = lazy(() => import("@/components/atoms/DashboardChart"));
 
 const Dashboard = () => {
   const navigate = useNavigate();
+
+  // Simplified mock data
+  const assets = [
+    {
+      symbol: "ETH",
+      name: "Ethereum",
+      icon: "⟠",
+      balance: "1.25 ETH",
+      valueUSD: "$2,000.00",
+      change24h: "+2.5%",
+      prediction: "HIGH",
+      predictionColor: "bg-green-500",
+      apy: "5.0%",
+      trend: "up",
+      link: "/asset/ETH"
+    },
+    {
+      symbol: "OCTO",
+      name: "OctoFi",
+      icon: "🐙",
+      balance: "10,000 OCTO",
+      valueUSD: "$500.00",
+      change24h: "-1.2%",
+      prediction: "MEDIUM",
+      predictionColor: "bg-yellow-500",
+      apy: "12.0%",
+      trend: "down"
+    },
+    {
+      symbol: "DAI",
+      name: "Dai",
+      icon: "◈",
+      balance: "5,000 DAI",
+      valueUSD: "$5,000.00",
+      change24h: "+0.1%",
+      prediction: "LOW",
+      predictionColor: "bg-gray-500",
+      apy: "2.0%",
+      trend: "up"
+    }
+  ];
 
   return (
     <AppLayout>
@@ -43,37 +86,15 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              {/* Chart */}
-              <div className="h-64 mt-6">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={chartData}>
-                    <defs>
-                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <XAxis 
-                      dataKey="time" 
-                      stroke="hsl(var(--muted-foreground))"
-                      fontSize={12}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "hsl(var(--card))",
-                        border: "1px solid hsl(var(--border))",
-                        borderRadius: "8px"
-                      }}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="value"
-                      stroke="hsl(var(--primary))"
-                      strokeWidth={3}
-                      fill="url(#colorValue)"
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+              {/* Chart - Lazy loaded */}
+              <div className="h-64 mt-6 md:col-span-2">
+                <Suspense fallback={
+                  <div className="h-full flex items-center justify-center text-muted-foreground">
+                    Loading chart...
+                  </div>
+                }>
+                  <ChartComponent />
+                </Suspense>
               </div>
             </div>
           </CardContent>
