@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './styles/animations.css';
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
@@ -137,5 +139,9 @@ All colors MUST be HSL.
   
   .animate-fade-in {
     animation: fade-in 0.8s ease-out;
+  }
+  
+  .animation-delay-500 {
+    animation-delay: 0.5s;
   }
 }
