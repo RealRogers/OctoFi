@@ -14,6 +14,7 @@ import ConfidenceScore from '@/components/atoms/ConfidenceScore'
 import { cn } from '@/lib/utils'
 import { Progress } from '@/components/ui/progress'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { EmptyState, ErrorEmptyState, LoadingEmptyState } from '@/components/ui/empty-state'
 
 interface AIInsightsPanelProps {
   tokenPair?: TokenPair
@@ -108,13 +109,15 @@ const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
   if (!isAIServiceAvailable) {
     return (
       <div className={cn(
-        'rounded-lg border border-gray-700 bg-gray-800/50 p-4',
+        'rounded-lg border border-gray-700 bg-gray-800/50',
         className
       )}>
-        <div className="flex items-center gap-2 text-gray-400">
-          <AlertCircle className="w-4 h-4" />
-          <span className="text-sm">AI insights temporarily unavailable</span>
-        </div>
+        <ErrorEmptyState
+          errorMessage="AI insights service is temporarily unavailable. Please try again later."
+          onRetry={handleRefresh}
+          size="sm"
+          glowColor="red"
+        />
       </div>
     )
   }
@@ -123,13 +126,16 @@ const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
   if (!tokenPair) {
     return (
       <div className={cn(
-        'rounded-lg border border-gray-700 bg-gray-800/50 p-4',
+        'rounded-lg border border-gray-700 bg-gray-800/50',
         className
       )}>
-        <div className="flex items-center gap-2 text-gray-400">
-          <Brain className="w-4 h-4" />
-          <span className="text-sm">Select tokens to view AI insights</span>
-        </div>
+        <EmptyState
+          icon={Brain}
+          title="Select Token Pair"
+          description="Choose tokens in the swap interface to view AI-powered market insights and predictions."
+          size="sm"
+          glowColor="blue"
+        />
       </div>
     )
   }
@@ -220,20 +226,21 @@ const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
 
       {/* Error State */}
       {error && (
-        <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-          <AlertCircle className="w-4 h-4 text-red-400" />
-          <span className="text-sm text-red-400">{error}</span>
-        </div>
+        <ErrorEmptyState
+          errorMessage={error}
+          onRetry={handleRefresh}
+          size="sm"
+          glowColor="red"
+        />
       )}
 
       {/* Loading State */}
       {isLoading && !currentPrediction && (
-        <div className="flex items-center justify-center py-8">
-          <div className="flex items-center gap-3">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-400" />
-            <span className="text-gray-400">Analyzing market conditions...</span>
-          </div>
-        </div>
+        <LoadingEmptyState
+          loadingText="Analyzing Market Conditions"
+          size="sm"
+          glowColor="blue"
+        />
       )}
 
       {/* Content */}
@@ -368,13 +375,17 @@ const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
 
       {/* Empty State */}
       {!isLoading && !error && !currentPrediction && !riskAssessment && (
-        <div className="text-center py-8">
-          <Brain className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-          <p className="text-gray-400">No AI insights available</p>
-          <p className="text-sm text-gray-500 mt-1">
-            Try refreshing or check your token selection
-          </p>
-        </div>
+        <EmptyState
+          icon={Brain}
+          title="No Insights Available"
+          description="AI analysis is currently unavailable for this token pair. Try refreshing or selecting different tokens."
+          action={{
+            label: 'Refresh Analysis',
+            onClick: handleRefresh
+          }}
+          size="sm"
+          glowColor="purple"
+        />
       )}
     </div>
   )

@@ -1,0 +1,289 @@
+/**
+ * Viewport Optimization Styles
+ * CSS for optimizing layout based on viewport size and ensuring critical content is above fold
+ */
+
+/* ============================================
+   Viewport-based Layout Adjustments
+   ============================================ */
+
+/* Small Viewport Optimizations (< 800px height) */
+.viewport-small .zone-hero {
+  min-height: 100px;
+  max-height: 100px;
+  padding: 16px 24px;
+}
+
+.viewport-small .zone-hero .hero-metrics > div {
+  text-align: center;
+}
+
+.viewport-small .zone-hero .hero-metrics .text-3xl {
+  font-size: 1.5rem; /* 24px */
+}
+
+.viewport-small .zone-hero .hero-metrics .text-xl {
+  font-size: 1.125rem; /* 18px */
+}
+
+.viewport-small .zone-performance {
+  min-height: 300px;
+  max-height: 300px;
+}
+
+.viewport-small .zone-performance .performance-header {
+  padding-bottom: 12px;
+}
+
+.viewport-small .zone-performance .performance-metrics {
+  gap: 16px;
+}
+
+/* Medium Viewport Optimizations (800px - 1080px height) */
+.viewport-medium .zone-hero {
+  min-height: 110px;
+  max-height: 110px;
+  padding: 20px 28px;
+}
+
+.viewport-medium .zone-performance {
+  min-height: 380px;
+  max-height: 380px;
+}
+
+/* Large Viewport (>= 1080px height) - Default styles */
+.viewport-large .zone-hero {
+  min-height: 120px;
+  max-height: 120px;
+}
+
+.viewport-large .zone-performance {
+  min-height: 450px;
+  max-height: 450px;
+}
+
+/* ============================================
+   Above Fold Optimization
+   ============================================ */
+
+/* When content fits above fold */
+.above-fold-optimized .dashboard-layout {
+  gap: 24px;
+}
+
+.above-fold-optimized .zone-hero,
+.above-fold-optimized .zone-performance {
+  margin-bottom: 0;
+}
+
+/* When optimization is needed */
+.needs-optimization .dashboard-layout {
+  gap: 16px;
+}
+
+.needs-optimization .zone-hero {
+  padding: 16px 24px;
+}
+
+.needs-optimization .zone-performance {
+  min-height: calc(var(--available-height) - var(--hero-height) - 32px);
+  max-height: calc(var(--available-height) - var(--hero-height) - 32px);
+}
+
+.needs-optimization .performance-chart-container {
+  height: calc(100% - 120px); /* Subtract header space */
+}
+
+/* ============================================
+   Compressed Mode Styles
+   ============================================ */
+
+/* Hero compression */
+.zone-hero[data-compressed="true"] {
+  min-height: 80px;
+  max-height: 80px;
+  padding: 12px 20px;
+}
+
+.zone-hero[data-compressed="true"] .hero-status-text {
+  font-size: 1.25rem; /* 20px */
+}
+
+.zone-hero[data-compressed="true"] .hero-metrics .text-3xl {
+  font-size: 1.5rem; /* 24px */
+}
+
+.zone-hero[data-compressed="true"] .hero-metrics .text-xl {
+  font-size: 1rem; /* 16px */
+}
+
+/* Performance compression */
+.zone-performance[data-compressed="true"] {
+  min-height: 250px;
+  max-height: 250px;
+}
+
+.zone-performance[data-compressed="true"] .performance-summary {
+  display: none; /* Hide summary metrics in compressed mode */
+}
+
+.zone-performance[data-compressed="true"] .performance-chart {
+  height: 200px;
+}
+
+/* Controls compression */
+.zone-controls[data-compressed="true"],
+.zone-trail[data-compressed="true"],
+.zone-insights[data-compressed="true"] {
+  min-height: 300px;
+  max-height: 300px;
+}
+
+/* ============================================
+   Responsive Spacing
+   ============================================ */
+
+/* Dynamic spacing based on viewport */
+.viewport-optimized-layout {
+  gap: var(--zone-gap, 24px);
+}
+
+.viewport-small .viewport-optimized-layout {
+  gap: 16px;
+}
+
+.viewport-medium .viewport-optimized-layout {
+  gap: 20px;
+}
+
+.viewport-large .viewport-optimized-layout {
+  gap: 24px;
+}
+
+/* ============================================
+   Scroll Optimization
+   ============================================ */
+
+/* Smooth scrolling for zone navigation */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll padding to account for fixed header */
+html {
+  scroll-padding-top: 100px;
+}
+
+/* Zone anchors for scroll targeting */
+.zone-hero,
+.zone-performance,
+.zone-ai-layer,
+.zone-controls,
+.zone-analytics {
+  scroll-margin-top: 100px;
+}
+
+/* ============================================
+   Performance Optimizations
+   ============================================ */
+
+/* Reduce animations on small viewports for better performance */
+.viewport-small .animate-stagger,
+.viewport-small .animate-fade-in {
+  animation-duration: 0.2s;
+}
+
+.viewport-small .glass-card-hover {
+  transition-duration: 0.15s;
+}
+
+/* Optimize backdrop blur on small viewports */
+.viewport-small .glass-card {
+  backdrop-filter: blur(8px);
+}
+
+.viewport-small .backdrop-blur-xl {
+  backdrop-filter: blur(8px);
+}
+
+/* ============================================
+   Critical Content Indicators
+   ============================================ */
+
+/* Visual indicator for above-fold content */
+.above-fold-content {
+  position: relative;
+}
+
+.above-fold-content::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(59, 130, 246, 0.3), 
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* Fold line indicator (development only) */
+.fold-indicator {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(239, 68, 68, 0.8), 
+    transparent
+  );
+  z-index: 9999;
+  pointer-events: none;
+  top: var(--available-height, 600px);
+}
+
+/* ============================================
+   Accessibility Improvements
+   ============================================ */
+
+/* Ensure sufficient contrast in compressed mode */
+.zone-hero[data-compressed="true"] .hero-status-text,
+.zone-hero[data-compressed="true"] .hero-metrics {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Focus indicators remain visible in compressed layouts */
+.viewport-small *:focus,
+.needs-optimization *:focus {
+  outline-offset: 1px;
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+  .viewport-optimized-layout {
+    gap: 12px;
+  }
+  
+  .zone-hero,
+  .zone-performance,
+  .zone-controls,
+  .zone-trail,
+  .zone-insights {
+    min-height: auto;
+    max-height: none;
+    page-break-inside: avoid;
+  }
+  
+  .glass-card {
+    background: white;
+    border: 1px solid #ccc;
+    backdrop-filter: none;
+  }
+}

@@ -8,6 +8,7 @@ import { Bot, Settings, BarChart3, AlertCircle, Clock, Zap, RefreshCcw, Loader2 
 import { TradingStrategy, AgentAction } from '@/services/types'
 import { tradingAgentService } from '@/services/tradingAgentService'
 import { useTradingAgentStore, useAppStore } from '@/services/store'
+import { useToast } from '@/components/ui/use-toast'
 import AgentToggle from '@/components/atoms/AgentToggle'
 import StrategySelector from '@/components/atoms/StrategySelector'
 import PerformanceMetrics from '@/components/atoms/PerformanceMetrics'
@@ -40,6 +41,7 @@ const AgentControls: React.FC<AgentControlsProps> = ({
   } = useTradingAgentStore()
 
   const { isWalletConnected } = useAppStore()
+  const { toast } = useToast()
 
   // Subscribe to agent actions
   useEffect(() => {
@@ -114,15 +116,26 @@ const AgentControls: React.FC<AgentControlsProps> = ({
     setIsOptimizing(true)
     setError(null)
 
+    // Show immediate feedback that optimization started
+    toast({
+      title: "🔄 Starting Optimization",
+      description: "AI agent is analyzing your portfolio for optimization opportunities...",
+      variant: "default",
+    })
+
     try {
       // Trigger portfolio optimization
       await tradingAgentService.optimizePortfolio?.()
-      
-      // Show success feedback
-      console.log('Portfolio optimization triggered')
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to optimize portfolio'
       setError(errorMessage)
+      
+      // Show error toast
+      toast({
+        title: "❌ Optimization Failed",
+        description: errorMessage,
+        variant: "destructive",
+      })
     } finally {
       setIsOptimizing(false)
     }
@@ -132,15 +145,26 @@ const AgentControls: React.FC<AgentControlsProps> = ({
     setIsRebalancing(true)
     setError(null)
 
+    // Show immediate feedback that rebalancing started
+    toast({
+      title: "🔄 Starting Rebalance",
+      description: "AI agent is rebalancing your portfolio to target allocation...",
+      variant: "default",
+    })
+
     try {
       // Force immediate rebalancing
       await tradingAgentService.forceRebalance?.()
-      
-      // Show success feedback
-      console.log('Portfolio rebalancing triggered')
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to rebalance portfolio'
       setError(errorMessage)
+      
+      // Show error toast
+      toast({
+        title: "❌ Rebalancing Failed",
+        description: errorMessage,
+        variant: "destructive",
+      })
     } finally {
       setIsRebalancing(false)
     }

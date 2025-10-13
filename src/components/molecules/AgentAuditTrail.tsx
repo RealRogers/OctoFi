@@ -17,11 +17,23 @@ import {
   XCircle,
   AlertCircle,
   TrendingUp,
-  TrendingDown
+  TrendingDown,
+  ChevronDown,
+  FileText,
+  FileSpreadsheet
 } from 'lucide-react'
 import { AgentAction, TransactionResult } from '@/services/types'
 import { useTradingAgent } from '@/hooks/useTradingAgent'
 import { formatUSDAmount } from '@/services/utils'
+import { exportService } from '@/services/exportService'
+import { useToast } from '@/components/ui/use-toast'
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu'
+import { EmptyState, LoadingEmptyState } from '@/components/ui/empty-state'
 import { cn } from '@/lib/utils'
 
 interface AgentAuditTrailProps {
@@ -42,8 +54,10 @@ const AgentAuditTrail: React.FC<AgentAuditTrailProps> = ({
   const [typeFilter, setTypeFilter] = useState<FilterType>('all')
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('24h')
   const [tradingHistory, setTradingHistory] = useState<TransactionResult[]>([])
+  const [isExporting, setIsExporting] = useState(false)
   
   const { recentActions, getHistory, isLoading } = useTradingAgent()
+  const { toast } = useToast()
 
   // Fetch trading history
   useEffect(() => {
@@ -178,27 +192,46 @@ const AgentAuditTrail: React.FC<AgentAuditTrailProps> = ({
     }).format(new Date(timestamp))
   }
 
-  const exportAuditTrail = () => {
-    const exportData = {
-      exportDate: new Date().toISOString(),
-      actions: filteredActions,
-      tradingHistory: tradingHistory,
-      summary: {
-        totalActions: filteredActions.length,
-        successfulActions: filteredActions.filter(a => a.result === 'success').length,
-        failedActions: filteredActions.filter(a => a.result === 'failure').length
-      }
-    }
+  const handleExport = async (format: 'csv' | 'pdf') => {
+    setIsExporting(true)
     
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `agent-audit-trail-${new Date().toISOString().split('T')[0]}.json`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    try {
+      // Show loading toast
+      toast({
+        title: "🔄 Preparing Export",
+        description: `Generating ${format.toUpperCase()} file...`,
+        variant: "default",
+      })
+
+      // Prepare export data
+      const exportData = filteredActions.map(action => ({
+        timestamp: formatTimestamp(action.timestamp),
+        type: action.type,
+        result: action.result || 'unknown',
+        description: formatActionData(action),
+        error: action.error || '',
+        details: JSON.stringify(action.data || {})
+      }))
+
+      // Export using the service
+      exportService.exportAuditTrail(exportData, format)
+
+      // Show success toast
+      toast({
+        title: "✅ Export Complete",
+        description: `Audit trail exported as ${format.toUpperCase()} file`,
+        variant: "default",
+      })
+    } catch (error) {
+      console.error('Export failed:', error)
+      toast({
+        title: "❌ Export Failed",
+        description: error instanceof Error ? error.message : 'Failed to export audit trail',
+        variant: "destructive",
+      })
+    } finally {
+      setIsExporting(false)
+    }
   }
 
   return (
@@ -212,13 +245,36 @@ const AgentAuditTrail: React.FC<AgentAuditTrailProps> = ({
           </div>
           
           {showExport && (
-            <button
-              onClick={exportAuditTrail}
-              className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium transition-colors"
-            >
-              <Download className="w-4 h-4" />
-              Export
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  disabled={isExporting || filteredActions.length === 0}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  Export
+                  <ChevronDown className="w-3 h-3" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem 
+                  onClick={() => handleExport('csv')}
+                  disabled={isExporting}
+                  className="flex items-center gap-2"
+                >
+                  <FileSpreadsheet className="w-4 h-4" />
+                  Export as CSV
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => handleExport('pdf')}
+                  disabled={isExporting}
+                  className="flex items-center gap-2"
+                >
+                  <FileText className="w-4 h-4" />
+                  Export as PDF
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
       </div>
@@ -270,20 +326,35 @@ const AgentAuditTrail: React.FC<AgentAuditTrailProps> = ({
       {/* Actions List */}
       <div className="max-h-96 overflow-y-auto">
         {isLoading ? (
-          <div className="p-8 text-center">
-            <div className="animate-spin w-6 h-6 border-2 border-blue-400 border-t-transparent rounded-full mx-auto mb-2" />
-            <p className="text-gray-400">Loading audit trail...</p>
-          </div>
+          <LoadingEmptyState
+            loadingText="Loading Audit Trail"
+            size="sm"
+            glowColor="blue"
+          />
         ) : filteredActions.length === 0 ? (
-          <div className="p-8 text-center">
-            <Clock className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-400">No actions found</p>
-            <p className="text-sm text-gray-500 mt-1">
-              {searchQuery || typeFilter !== 'all' || timeFilter !== 'all' 
-                ? 'Try adjusting your filters' 
-                : 'Agent actions will appear here'}
-            </p>
-          </div>
+          <EmptyState
+            icon={Clock}
+            title={searchQuery || typeFilter !== 'all' || timeFilter !== 'all' ? 'No Actions Found' : 'No Activity Yet'}
+            description={
+              searchQuery || typeFilter !== 'all' || timeFilter !== 'all' 
+                ? 'No actions match your current filters. Try adjusting your search criteria or time range.' 
+                : 'Agent actions and trading activity will appear here once your AI agent starts operating.'
+            }
+            action={
+              searchQuery || typeFilter !== 'all' || timeFilter !== 'all' 
+                ? {
+                    label: 'Clear Filters',
+                    onClick: () => {
+                      setSearchQuery('')
+                      setTypeFilter('all')
+                      setTimeFilter('24h')
+                    }
+                  }
+                : undefined
+            }
+            size="sm"
+            glowColor="gray"
+          />
         ) : (
           <div className="divide-y divide-gray-700">
             {filteredActions.map((action, index) => (

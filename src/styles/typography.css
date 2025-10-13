@@ -1,0 +1,349 @@
+/**
+ * Typography System
+ * Hierarchical typography utilities for consistent text styling
+ */
+
+/* ============================================
+   Display Typography (Largest)
+   ============================================ */
+
+.text-display-large {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.text-display-medium {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.text-display-small {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================
+   Heading Typography
+   ============================================ */
+
+.text-heading-large {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+
+.text-heading-medium {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.text-heading-small {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* ============================================
+   Body Typography
+   ============================================ */
+
+.text-body-large {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.text-body-medium {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.text-body-small {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* ============================================
+   Caption Typography
+   ============================================ */
+
+.text-caption-large {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.text-caption-medium {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.text-caption-small {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================
+   Metric Typography (Special Purpose)
+   ============================================ */
+
+.text-metric-hero {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.text-metric-large {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.text-metric-medium {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.text-metric-small {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================
+   Semantic Typography Classes
+   ============================================ */
+
+/* Hero section typography */
+.hero-title {
+  @apply text-heading-medium font-bold text-white;
+}
+
+.hero-subtitle {
+  @apply text-body-medium text-gray-400;
+}
+
+.hero-metric-value {
+  @apply text-metric-hero;
+}
+
+.hero-metric-label {
+  @apply text-caption-large text-gray-400;
+}
+
+/* Card typography */
+.card-title {
+  @apply text-heading-small font-semibold text-white;
+}
+
+.card-subtitle {
+  @apply text-body-small text-gray-400;
+}
+
+.card-content {
+  @apply text-body-medium text-gray-300;
+}
+
+/* Status and labels */
+.status-text {
+  @apply text-heading-medium font-bold;
+}
+
+.label-primary {
+  @apply text-body-small font-medium text-gray-300;
+}
+
+.label-secondary {
+  @apply text-caption-large font-medium text-gray-400;
+}
+
+.label-tertiary {
+  @apply text-caption-medium font-medium text-gray-500;
+}
+
+/* Metrics and numbers */
+.metric-primary {
+  @apply text-metric-large font-bold;
+}
+
+.metric-secondary {
+  @apply text-metric-medium font-semibold;
+}
+
+.metric-tertiary {
+  @apply text-metric-small font-medium;
+}
+
+/* ============================================
+   Mobile Typography Adjustments
+   ============================================ */
+
+@media (max-width: 767px) {
+  .text-display-large {
+    font-size: 32px;
+  }
+
+  .text-display-medium {
+    font-size: 28px;
+  }
+
+  .text-display-small {
+    font-size: 24px;
+  }
+
+  .text-heading-large {
+    font-size: 22px;
+  }
+
+  .text-heading-medium {
+    font-size: 20px;
+  }
+
+  .text-heading-small {
+    font-size: 18px;
+  }
+
+  .text-body-large {
+    font-size: 16px;
+  }
+
+  .text-body-medium {
+    font-size: 14px;
+  }
+
+  .text-body-small {
+    font-size: 13px;
+  }
+
+  .text-metric-hero {
+    font-size: 28px;
+  }
+
+  .text-metric-large {
+    font-size: 24px;
+  }
+
+  .text-metric-medium {
+    font-size: 20px;
+  }
+
+  .text-metric-small {
+    font-size: 18px;
+  }
+
+  /* Mobile semantic classes */
+  .hero-title {
+    @apply text-heading-small;
+  }
+
+  .hero-metric-value {
+    @apply text-metric-large;
+  }
+
+  .card-title {
+    @apply text-body-large;
+  }
+
+  .status-text {
+    @apply text-heading-small;
+  }
+
+  .metric-primary {
+    @apply text-metric-medium;
+  }
+
+  .metric-secondary {
+    @apply text-metric-small;
+  }
+}
+
+/* ============================================
+   Typography Utilities
+   ============================================ */
+
+/* Font weight utilities */
+.font-light { font-weight: 300; }
+.font-regular { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.font-extrabold { font-weight: 800; }
+
+/* Line height utilities */
+.leading-tight { line-height: 1.2; }
+.leading-normal { line-height: 1.4; }
+.leading-relaxed { line-height: 1.6; }
+.leading-loose { line-height: 1.8; }
+
+/* Letter spacing utilities */
+.tracking-tighter { letter-spacing: -0.02em; }
+.tracking-tight { letter-spacing: -0.01em; }
+.tracking-normal { letter-spacing: 0; }
+.tracking-wide { letter-spacing: 0.01em; }
+
+/* Tabular numbers for metrics */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Text truncation */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.text-truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ============================================
+   Color Hierarchy Classes
+   ============================================ */
+
+/* Primary text hierarchy */
+.text-primary { @apply text-white; }
+.text-secondary { @apply text-gray-300; }
+.text-tertiary { @apply text-gray-400; }
+.text-quaternary { @apply text-gray-500; }
+
+/* Status colors */
+.text-success { @apply text-green-400; }
+.text-warning { @apply text-yellow-400; }
+.text-error { @apply text-red-400; }
+.text-info { @apply text-blue-400; }
+
+/* Accent colors */
+.text-accent-primary { @apply text-purple-400; }
+.text-accent-secondary { @apply text-blue-400; }
+.text-accent-tertiary { @apply text-emerald-400; }

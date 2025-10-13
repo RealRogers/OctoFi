@@ -215,3 +215,51 @@ export interface AgentAction {
   result?: 'success' | 'failure'
   error?: string
 }
+
+// AI Recommendation Types
+export type RecommendationPriority = 'low' | 'medium' | 'high' | 'critical'
+export type RecommendationCategory = 'strategy' | 'risk' | 'opportunity' | 'optimization'
+export type RecommendationStatus = 'pending' | 'applied' | 'dismissed' | 'expired'
+
+export interface AIRecommendation {
+  id: string
+  priority: RecommendationPriority
+  category: RecommendationCategory
+  status: RecommendationStatus
+  title: string
+  message: string
+  rationale: string[]
+  confidence: number // 0-100
+  impact: {
+    risk: 'decrease' | 'neutral' | 'increase'
+    return: 'decrease' | 'neutral' | 'increase'
+    complexity: 'low' | 'medium' | 'high'
+  }
+  action?: {
+    type: 'strategy_update' | 'rebalance' | 'pause_agent' | 'adjust_limits' | 'manual_review'
+    payload: any
+    autoApplicable: boolean
+  }
+  expiresAt?: Date
+  createdAt: Date
+  appliedAt?: Date
+}
+
+export interface RecommendationFilters {
+  priority?: RecommendationPriority[]
+  category?: RecommendationCategory[]
+  status?: RecommendationStatus[]
+  timeRange?: {
+    start: Date
+    end: Date
+  }
+}
+
+export interface RecommendationMetrics {
+  totalRecommendations: number
+  appliedRecommendations: number
+  dismissedRecommendations: number
+  averageConfidence: number
+  categoryBreakdown: Record<RecommendationCategory, number>
+  priorityBreakdown: Record<RecommendationPriority, number>
+}

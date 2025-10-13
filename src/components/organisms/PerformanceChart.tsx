@@ -124,7 +124,7 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({
   }
 
   return (
-    <Card className={cn('bg-gray-800/50 border-gray-700', className)}>
+    <div className={cn('', className)}>
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
@@ -133,16 +133,16 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({
           </CardTitle>
           
           {/* Timeframe Selector */}
-          <div className="flex gap-1 bg-gray-900/50 rounded-lg p-1">
+          <div className="flex gap-1 glass-card rounded-lg p-1">
             {(['24h', '7d', '30d', 'all'] as const).map((tf) => (
               <button
                 key={tf}
                 onClick={() => onTimeframeChange?.(tf)}
                 className={cn(
-                  'px-3 py-1 text-xs font-medium rounded transition-colors',
+                  'px-3 py-1 text-xs font-medium rounded transition-all duration-300',
                   timeframe === tf
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                    ? 'bg-blue-600/80 text-white backdrop-blur-sm'
+                    : 'text-gray-400 hover:text-white hover:bg-white/10'
                 )}
               >
                 {tf.toUpperCase()}
@@ -154,7 +154,7 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({
         {/* Summary Metrics */}
         {metrics && (
           <div className="grid grid-cols-3 gap-4 mt-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 glass-card p-3 rounded-lg">
               {metrics.trend === 'up' ? (
                 <TrendingUp className="w-4 h-4 text-green-400" />
               ) : (
@@ -171,7 +171,7 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 glass-card p-3 rounded-lg">
               <DollarSign className="w-4 h-4 text-blue-400" />
               <div>
                 <p className="text-xs text-gray-400">Total Trades</p>
@@ -179,7 +179,7 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 glass-card p-3 rounded-lg">
               <Calendar className="w-4 h-4 text-purple-400" />
               <div>
                 <p className="text-xs text-gray-400">Avg Win Rate</p>
@@ -192,7 +192,7 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({
 
       <CardContent className="space-y-4">
         {/* Chart Type Selector */}
-        <div className="flex gap-2 border-b border-gray-700 pb-2">
+        <div className="flex gap-2 border-b border-white/10 pb-2">
           {[
             { id: 'pnl', label: 'P&L Trend', icon: TrendingUp },
             { id: 'trades', label: 'Trade Volume', icon: Activity },
@@ -203,10 +203,10 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({
               key={id}
               onClick={() => setActiveChart(id as any)}
               className={cn(
-                'flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                'flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300',
                 activeChart === id
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                  ? 'bg-blue-600/80 text-white backdrop-blur-sm shadow-lg'
+                  : 'text-gray-400 hover:text-white glass-card-hover'
               )}
             >
               <Icon className="w-4 h-4" />
@@ -216,9 +216,10 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({
         </div>
 
         {/* Charts */}
-        <div className="h-64">
+        <div className="h-64 glass-card rounded-lg p-4 relative">
+          <div className="gradient-overlay rounded-lg"></div>
           {chartData.length === 0 ? (
-            <div className="flex items-center justify-center h-full">
+            <div className="flex items-center justify-center h-full relative z-10">
               <div className="text-center">
                 <Activity className="w-12 h-12 text-gray-600 mx-auto mb-3" />
                 <p className="text-gray-400">No performance data available</p>
@@ -228,7 +229,8 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({
               </div>
             </div>
           ) : (
-            <ResponsiveContainer width="100%" height="100%">
+            <div className="relative z-10">
+              <ResponsiveContainer width="100%" height="100%">
               {activeChart === 'pnl' ? (
                 <AreaChart data={chartData}>
                   <defs>
@@ -316,11 +318,12 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({
                   <Tooltip content={<CustomTooltip />} />
                 </PieChart>
               )}
-            </ResponsiveContainer>
+              </ResponsiveContainer>
+            </div>
           )}
         </div>
       </CardContent>
-    </Card>
+    </div>
   )
 }
 

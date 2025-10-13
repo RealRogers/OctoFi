@@ -1,0 +1,606 @@
+/**
+ * Dashboard Layout System
+ * CSS Grid-based layout with named areas and responsive behavior
+ * 
+ * Architecture Overview:
+ * - 5 distinct zones with clear information hierarchy
+ * - Asymmetric grid system that reflects real usage patterns
+ * - Responsive transformations that maintain usability across devices
+ * - Performance optimizations with GPU acceleration and containment
+ */
+
+/* ============================================
+   Main Dashboard Layout Container
+   ============================================ */
+
+/**
+ * Primary Dashboard Grid Layout
+ * 
+ * Desktop Layout (≥1280px): 5-zone asymmetric system
+ * 
+ * Zone Structure:
+ * 1. Hero (hero): Full width, fixed 120px height - Critical status info
+ * 2. Performance (performance): Full width, flexible height - Key metrics visualization
+ * 3. AI Layer (ai-layer): Full width, conditional - Dynamic recommendations
+ * 4. Control Grid: 3-column asymmetric layout
+ *    - Controls (controls): 2fr (40%) - Primary interactions, needs space for forms
+ *    - Trail (trail): 1fr (20%) - Compact audit list, minimal width needed
+ *    - Insights (insights): 1.5fr (30%) - Data visualization, medium width optimal
+ * 5. Analytics (analytics): Full width, lazy loaded - Extended historical data
+ * 
+ * Grid Template Rationale:
+ * - Asymmetric proportions (2fr 1fr 1.5fr) reflect actual content needs
+ * - Fixed hero height ensures consistent above-the-fold experience
+ * - Flexible performance height adapts to chart content
+ * - minmax(400px, 600px) for control grid prevents cramped or excessive height
+ */
+.dashboard-layout {
+  display: grid;
+  grid-template-areas:
+    "hero hero hero"
+    "performance performance performance"
+    "ai-layer ai-layer ai-layer"
+    "controls trail insights"
+    "analytics analytics analytics";
+  grid-template-columns: 2fr 1fr 1.5fr;
+  grid-template-rows: 120px auto auto minmax(400px, 600px) auto;
+  gap: 24px; /* 3 × 8px grid system */
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ============================================
+   Zone Assignments
+   ============================================ */
+
+.zone-hero {
+  grid-area: hero;
+}
+
+.zone-performance {
+  grid-area: performance;
+}
+
+.zone-ai-layer {
+  grid-area: ai-layer;
+}
+
+.zone-controls {
+  grid-area: controls;
+}
+
+.zone-trail {
+  grid-area: trail;
+}
+
+.zone-insights {
+  grid-area: insights;
+}
+
+.zone-analytics {
+  grid-area: analytics;
+}
+
+/* ============================================
+   Tablet Layout (768px - 1279px)
+   ============================================ */
+
+/**
+ * Tablet Responsive Transformation
+ * 
+ * Strategy: Maintain information hierarchy while adapting to narrower screens
+ * 
+ * Key Changes from Desktop:
+ * 1. Zone 4 transforms from 3-column asymmetric to 2-row stacked layout
+ * 2. Controls get full width priority (most important for user actions)
+ * 3. Trail and Insights share equal space below (secondary information)
+ * 4. Reduced gap (20px vs 24px) to maximize content space
+ * 5. Adjusted control grid height range for better proportion
+ * 
+ * Layout Flow:
+ * - Hero: Full width (maintains critical status visibility)
+ * - Performance: Full width (charts need horizontal space)
+ * - AI Layer: Full width (recommendations need full attention)
+ * - Controls: Full width (forms and buttons need space, highest priority)
+ * - Trail + Insights: Side-by-side 50/50 (equal importance at this level)
+ * - Analytics: Full width (data tables need horizontal space)
+ */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .dashboard-layout {
+    grid-template-areas:
+      "hero hero"
+      "performance performance"
+      "ai-layer ai-layer"
+      "controls controls"      /* Full width priority for primary actions */
+      "trail insights"         /* Equal split for secondary information */
+      "analytics analytics";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 120px auto auto auto minmax(300px, 500px) auto;
+    gap: 20px; /* Reduced from 24px to maximize content space */
+  }
+}
+
+/* ============================================
+   Mobile Layout (<768px)
+   ============================================ */
+
+/**
+ * Mobile Responsive Transformation
+ * 
+ * Strategy: Single-column layout with tabbed interface for Zone 4
+ * 
+ * Key Changes from Tablet:
+ * 1. Complete single-column layout for optimal mobile experience
+ * 2. Zone 4 becomes tabbed interface (controls-tabs) to save vertical space
+ * 3. Individual zone components (controls, trail, insights) hidden in favor of tabs
+ * 4. Minimum gap (16px) to maximize content on small screens
+ * 5. All rows use auto height for flexible content adaptation
+ * 
+ * Tab Priority Order (implemented in ResponsiveControlGrid component):
+ * 1. Controls - Primary actions (pause, strategy, settings)
+ * 2. AI Insights - Decision support information
+ * 3. History - Audit trail for reference
+ * 
+ * This order prioritizes the most common mobile use cases:
+ * - Quick status check and control actions
+ * - Market insights for decision making
+ * - Historical reference when needed
+ */
+@media (max-width: 767px) {
+  .dashboard-layout {
+    grid-template-areas:
+      "hero"
+      "performance"
+      "ai-layer"
+      "controls-tabs"    /* Tabbed interface replaces 3-column grid */
+      "analytics";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto;
+    gap: 16px; /* Minimum gap for mobile space optimization */
+  }
+
+  /* 
+   * Hide individual zone components on mobile
+   * They are replaced by the tabbed interface in controls-tabs
+   */
+  .zone-controls,
+  .zone-trail,
+  .zone-insights {
+    display: none;
+  }
+
+  .zone-controls-tabs {
+    grid-area: controls-tabs;
+  }
+}
+
+/* ============================================
+   Zone-Specific Styles
+   ============================================ */
+
+/* Hero Status Bar */
+.zone-hero {
+  min-height: 120px;
+  max-height: 120px;
+  display: flex;
+  align-items: center;
+  padding: 24px 32px;
+  position: relative;
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.05) 0%, 
+    rgba(139, 92, 246, 0.05) 50%,
+    rgba(16, 185, 129, 0.03) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.37),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.zone-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.2), 
+    transparent
+  );
+  pointer-events: none;
+}
+
+.zone-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.1), 
+    transparent
+  );
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .zone-hero {
+    min-height: auto;
+    padding: 16px 20px;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+  
+  .zone-hero .hero-sections {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .zone-hero .hero-metrics {
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 16px;
+  }
+  
+  .zone-hero .hero-metrics > div {
+    text-align: center;
+    min-width: 0;
+  }
+}
+
+/* Performance Overview */
+.zone-performance {
+  min-height: 400px;
+  max-height: 500px;
+}
+
+@media (max-width: 1279px) {
+  .zone-performance {
+    min-height: 350px;
+    max-height: 450px;
+  }
+}
+
+@media (max-width: 767px) {
+  .zone-performance {
+    min-height: 300px;
+    max-height: 400px;
+  }
+}
+
+/* AI Intelligence Layer - Conditional */
+.zone-ai-layer {
+  min-height: 0;
+  transition: all 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.zone-ai-layer.hidden {
+  display: none;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Control Grid Zones */
+.zone-controls,
+.zone-trail,
+.zone-insights {
+  min-height: 400px;
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+@media (max-width: 1279px) {
+  .zone-controls {
+    max-height: none;
+  }
+  
+  .zone-trail,
+  .zone-insights {
+    min-height: 300px;
+    max-height: 500px;
+  }
+}
+
+/* Analytics Zone */
+.zone-analytics {
+  min-height: 200px;
+}
+
+/* ============================================
+   Layout Utilities
+   ============================================ */
+
+/* Smooth transitions for responsive changes */
+.dashboard-layout {
+  transition: grid-template-columns 300ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              grid-template-rows 300ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              gap 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.dashboard-layout > * {
+  transition: all 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Grid system transitions */
+.grid-asymmetric {
+  transition: grid-template-columns 300ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              gap 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Prevent layout shift during transitions */
+.layout-transitioning {
+  pointer-events: none;
+}
+
+.layout-transitioning * {
+  transition-duration: 150ms !important;
+}
+
+/* Prevent layout shift during loading */
+.dashboard-layout > * {
+  min-height: inherit;
+}
+
+/* Custom scrollbar for overflow zones */
+.zone-controls::-webkit-scrollbar,
+.zone-trail::-webkit-scrollbar,
+.zone-insights::-webkit-scrollbar {
+  width: 6px;
+}
+
+.zone-controls::-webkit-scrollbar-track,
+.zone-trail::-webkit-scrollbar-track,
+.zone-insights::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.zone-controls::-webkit-scrollbar-thumb,
+.zone-trail::-webkit-scrollbar-thumb,
+.zone-insights::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.zone-controls::-webkit-scrollbar-thumb:hover,
+.zone-trail::-webkit-scrollbar-thumb:hover,
+.zone-insights::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================
+   Entrance Animations
+   ============================================ */
+
+/**
+ * Zone Entrance Animation System
+ * 
+ * Purpose: Guide user attention through information hierarchy with staggered reveals
+ * 
+ * Animation Strategy:
+ * - Subtle slide-up + fade-in effect (20px translate)
+ * - Smooth easing curve for natural motion
+ * - 400ms duration for noticeable but not slow animation
+ * - Staggered delays create cascading effect
+ * 
+ * Stagger Timing Logic (100ms intervals):
+ * 1. Hero (0ms) - Immediate status visibility is critical
+ * 2. Performance (100ms) - Key metrics follow status
+ * 3. AI Layer (200ms) - Recommendations appear after context is established
+ * 4. Controls (300ms) - Interactive elements after information is consumed
+ * 5. Trail (400ms) - Historical context after current state
+ * 6. Insights (500ms) - Analysis tools after primary information
+ * 7. Analytics (600ms) - Extended data last (below fold anyway)
+ * 
+ * This timing creates a natural reading flow that matches the visual hierarchy.
+ */
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px); /* Subtle upward motion */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.zone-animate-in {
+  animation: slideUpFadeIn 400ms cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* 
+ * Staggered Animation Delays
+ * Each zone appears 100ms after the previous, creating a cascading reveal
+ * that guides the user's eye through the information hierarchy
+ */
+.zone-hero { animation-delay: 0ms; }        /* Critical status - immediate */
+.zone-performance { animation-delay: 100ms; } /* Key metrics - second priority */
+.zone-ai-layer { animation-delay: 200ms; }    /* Recommendations - contextual */
+.zone-controls { animation-delay: 300ms; }    /* Actions - after information */
+.zone-trail { animation-delay: 400ms; }       /* History - reference material */
+.zone-insights { animation-delay: 500ms; }    /* Analysis - deeper dive */
+.zone-analytics { animation-delay: 600ms; }   /* Extended data - comprehensive view */
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-layout,
+  .dashboard-layout > *,
+  .zone-animate-in {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ============================================
+   Grid Helper Classes
+   ============================================ */
+
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: 24px;
+}
+
+@media (max-width: 1279px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .grid-asymmetric {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ============================================
+   Spacing Utilities - 8px Grid System
+   ============================================ */
+
+/* Zone-level spacing */
+.zone-gap {
+  gap: 24px; /* 3 * 8px */
+}
+
+.zone-gap-mobile {
+  gap: 16px; /* 2 * 8px */
+}
+
+/* Card-level spacing */
+.card-padding {
+  padding: 24px; /* 3 * 8px */
+}
+
+.card-padding-mobile {
+  padding: 16px; /* 2 * 8px */
+}
+
+.card-padding-large {
+  padding: 32px; /* 4 * 8px */
+}
+
+/* Grid spacing */
+.grid-gap {
+  gap: 24px; /* 3 * 8px */
+}
+
+.grid-gap-mobile {
+  gap: 16px; /* 2 * 8px */
+}
+
+/* Section spacing */
+.section-margin {
+  margin: 32px 0; /* 4 * 8px */
+}
+
+.section-margin-mobile {
+  margin: 24px 0; /* 3 * 8px */
+}
+
+/* Component spacing */
+.component-gap {
+  gap: 16px; /* 2 * 8px */
+}
+
+.component-gap-small {
+  gap: 8px; /* 1 * 8px */
+}
+
+.component-gap-large {
+  gap: 32px; /* 4 * 8px */
+}
+
+/* Content spacing */
+.content-spacing {
+  margin-bottom: 24px; /* 3 * 8px */
+}
+
+.content-spacing-tight {
+  margin-bottom: 16px; /* 2 * 8px */
+}
+
+.content-spacing-loose {
+  margin-bottom: 32px; /* 4 * 8px */
+}
+
+/* Responsive spacing adjustments */
+@media (max-width: 767px) {
+  .zone-gap {
+    gap: 16px; /* 2 * 8px */
+  }
+  
+  .card-padding {
+    padding: 16px; /* 2 * 8px */
+  }
+  
+  .grid-gap {
+    gap: 16px; /* 2 * 8px */
+  }
+  
+  .section-margin {
+    margin: 24px 0; /* 3 * 8px */
+  }
+  
+  .component-gap {
+    gap: 12px; /* 1.5 * 8px */
+  }
+  
+  .content-spacing {
+    margin-bottom: 16px; /* 2 * 8px */
+  }
+}
+
+/* Consistent spacing for specific zones */
+.dashboard-layout {
+  gap: 24px; /* 3 * 8px */
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .dashboard-layout {
+    gap: 20px; /* 2.5 * 8px */
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboard-layout {
+    gap: 16px; /* 2 * 8px */
+  }
+}
+
+/* ============================================
+   Performance Optimizations
+   ============================================ */
+
+/* Use GPU acceleration for animations */
+.zone-animate-in,
+.dashboard-layout > * {
+  will-change: transform, opacity;
+}
+
+/* Remove will-change after animation completes */
+.zone-animate-in.animation-complete {
+  will-change: auto;
+}
+
+/* Contain layout calculations within zones */
+.zone-hero,
+.zone-performance,
+.zone-ai-layer,
+.zone-controls,
+.zone-trail,
+.zone-insights,
+.zone-analytics {
+  contain: layout style paint;
+}
