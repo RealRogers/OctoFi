@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const CTA = () => {
+  const navigate = useNavigate();
+  
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10" />
@@ -33,6 +36,7 @@ const CTA = () => {
             <Button 
               size="lg" 
               className="group relative overflow-hidden bg-gradient-to-r from-primary to-accent hover:shadow-[var(--glow-primary)] transition-all duration-300 text-lg px-10 py-7"
+              onClick={() => navigate("/dashboard")}
             >
               Launch App
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -42,6 +46,10 @@ const CTA = () => {
               size="lg" 
               variant="outline"
               className="border-primary/30 hover:border-primary hover:bg-primary/10 text-lg px-10 py-7 transition-all duration-300"
+              onClick={() => {
+                const howItWorksSection = document.getElementById('how-it-works');
+                howItWorksSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               View Documentation
             </Button>

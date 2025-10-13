@@ -57,14 +57,22 @@ const Hero = () => {
               size="lg" 
               variant="outline"
               className="border-primary/30 hover:border-primary hover:bg-primary/10 text-lg px-8 py-6 transition-all duration-300"
+              onClick={() => {
+                const howItWorksSection = document.getElementById('how-it-works');
+                howItWorksSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
-              View Demo
+              How it Works
             </Button>
             
             <Button 
               size="lg" 
               variant="outline"
               className="border-primary/30 hover:border-primary hover:bg-primary/10 text-lg px-8 py-6 transition-all duration-300"
+              onClick={() => {
+                const howItWorksSection = document.getElementById('how-it-works');
+                howItWorksSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Learn More
             </Button>
