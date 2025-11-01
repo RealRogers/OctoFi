@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap Debug</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .status { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background: #0a4; }
+        .error { background: #a04; }
+        .info { background: #04a; }
+    </style>
+</head>
+<body>
+    <h1>Swap Page Debug</h1>
+    <div id="results"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.textContent = message;
+            results.appendChild(div);
+        }
+        
+        // Test 1: Check if we can reach the swap page
+        log('Testing /swap endpoint...', 'info');
+        fetch('/swap')
+            .then(response => {
+                if (response.ok) {
+                    log('✓ /swap endpoint is accessible', 'success');
+                    return response.text();
+                } else {
+                    log(`✗ /swap returned status ${response.status}`, 'error');
+                }
+            })
+            .then(html => {
+                if (html) {
+                    log(`✓ HTML received (${html.length} bytes)`, 'success');
+                    
+                    // Check for React root
+                    if (html.includes('id="root"')) {
+                        log('✓ React root element found', 'success');
+                    } else {
+                        log('✗ React root element NOT found', 'error');
+                    }
+                    
+                    // Check for script tags
+                    const scriptCount = (html.match(/<script/g) || []).length;
+                    log(`✓ Found ${scriptCount} script tags`, 'success');
+                }
+            })
+            .catch(error => {
+                log(`✗ Error fetching /swap: ${error.message}`, 'error');
+            });
+        
+        // Test 2: Try to load the page in an iframe
+        log('Loading /swap in iframe...', 'info');
+        const iframe = document.createElement('iframe');
+        iframe.src = '/swap';
+        iframe.style.width = '100%';
+        iframe.style.height = '600px';
+        iframe.style.border = '2px solid #444';
+        iframe.style.marginTop = '20px';
+        
+        iframe.onload = () => {
+            log('✓ Iframe loaded successfully', 'success');
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                const rootEl = iframeDoc.getElementById('root');
+                if (rootEl) {
+                    log(`✓ Root element found in iframe`, 'success');
+                    log(`Root innerHTML length: ${rootEl.innerHTML.length}`, 'info');
+                    if (rootEl.innerHTML.length === 0) {
+                        log('✗ Root element is EMPTY - React may not be rendering', 'error');
+                    }
+                } else {
+                    log('✗ Root element NOT found in iframe', 'error');
+                }
+            } catch (e) {
+                log(`✗ Cannot access iframe content: ${e.message}`, 'error');
+            }
+        };
+        
+        iframe.onerror = () => {
+            log('✗ Iframe failed to load', 'error');
+        };
+        
+        document.body.appendChild(iframe);
+        
+        // Test 3: Check console errors
+        window.addEventListener('error', (e) => {
+            log(`✗ JavaScript Error: ${e.message}`, 'error');
+        });
+    </script>
+</body>
+</html>

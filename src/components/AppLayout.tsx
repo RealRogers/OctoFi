@@ -29,6 +29,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     { name: "Agent Dashboard", href: "/agent-dashboard" },
     { name: "Swap", href: "/swap" },
     { name: "Stake", href: "/stake" },
+    { name: "About", href: "/about" },
     { name: "Settings", href: "/settings" }
   ];
 

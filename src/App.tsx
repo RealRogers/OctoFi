@@ -12,7 +12,11 @@ const Settings = lazy(() => import("./pages/Settings"));
 const AgentStatus = lazy(() => import("./pages/AgentStatus"));
 const AgentDashboardPage = lazy(() => import("./pages/AgentDashboardPage"));
 const Swap = lazy(() => import("./pages/Swap"));
+const SwapSimple = lazy(() => import("./pages/SwapSimple"));
+const SwapDebug = lazy(() => import("./pages/SwapDebug"));
 const Stake = lazy(() => import("./pages/Stake"));
+const StakeSimple = lazy(() => import("./pages/StakeSimple"));
+const StakeDebug = lazy(() => import("./pages/StakeDebug"));
 const StyleTest = lazy(() => import("./pages/StyleTest"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -32,8 +36,12 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/agent-status" element={<AgentStatus />} />
             <Route path="/agent-dashboard" element={<AgentDashboardPage />} />
-            <Route path="/swap" element={<Swap />} />
-            <Route path="/stake" element={<Stake />} />
+            <Route path="/swap" element={<SwapSimple />} />
+            <Route path="/swap-original" element={<Swap />} />
+            <Route path="/swap-debug" element={<SwapDebug />} />
+            <Route path="/stake" element={<StakeSimple />} />
+            <Route path="/stake-full" element={<Stake />} />
+            <Route path="/stake-debug" element={<StakeDebug />} />
             <Route path="/style-test" element={<StyleTest />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

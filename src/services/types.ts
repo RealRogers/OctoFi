@@ -208,10 +208,62 @@ export type RecoveryAction =
   | { type: 'manual'; instructions: string[] }
 
 // Agent Action Types
+
+/**
+ * Data payload for swap actions
+ */
+export interface SwapActionData {
+  type: 'optimization' | 'rebalancing' | 'standard'
+  fromToken: string
+  toToken: string
+  amount: number
+  executedPrice: number
+  slippage?: number
+  gasUsed?: number
+}
+
+/**
+ * Data payload for pause actions
+ */
+export interface PauseActionData {
+  reason: string
+  timestamp: number
+  triggeredBy: 'user' | 'system' | 'risk_threshold'
+}
+
+/**
+ * Data payload for resume actions
+ */
+export interface ResumeActionData {
+  timestamp: number
+  triggeredBy: 'user' | 'system' | 'scheduled'
+}
+
+/**
+ * Data payload for strategy change actions
+ */
+export interface StrategyChangeActionData {
+  oldStrategy: TradingStrategy
+  newStrategy: TradingStrategy
+  reason?: string
+}
+
+/**
+ * Discriminated union of all possible agent action data types
+ */
+export type AgentActionData = 
+  | SwapActionData 
+  | PauseActionData 
+  | ResumeActionData
+  | StrategyChangeActionData
+
+/**
+ * Agent action with properly typed data payload
+ */
 export interface AgentAction {
   type: 'swap' | 'pause' | 'resume' | 'strategy_change'
   timestamp: Date
-  data: any
+  data?: AgentActionData
   result?: 'success' | 'failure'
   error?: string
 }

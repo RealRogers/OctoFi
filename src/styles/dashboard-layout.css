@@ -604,3 +604,246 @@
 .zone-analytics {
   contain: layout style paint;
 }
+
+/* ============================================
+   Responsive Text and Component Utilities
+   ============================================ */
+
+/**
+ * Responsive Text Size Utilities
+ * 
+ * These classes automatically adjust text sizes based on screen size
+ * to maintain readability and visual hierarchy across devices.
+ */
+
+/* Responsive heading sizes */
+.responsive-heading {
+  font-size: 1.875rem; /* 30px - text-3xl */
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .responsive-heading {
+    font-size: 1.25rem; /* 20px - text-xl */
+  }
+}
+
+/* Responsive subheading sizes */
+.responsive-subheading {
+  font-size: 1rem; /* 16px - text-base */
+}
+
+@media (max-width: 767px) {
+  .responsive-subheading {
+    font-size: 0.875rem; /* 14px - text-sm */
+  }
+}
+
+/* Responsive card title sizes */
+.responsive-card-title {
+  font-size: 0.875rem; /* 14px - text-sm */
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .responsive-card-title {
+    font-size: 0.75rem; /* 12px - text-xs */
+  }
+}
+
+/* Responsive body text sizes */
+.responsive-text {
+  font-size: 1rem; /* 16px - text-base */
+}
+
+@media (max-width: 767px) {
+  .responsive-text {
+    font-size: 0.875rem; /* 14px - text-sm */
+  }
+}
+
+/* Responsive small text sizes */
+.responsive-text-sm {
+  font-size: 0.875rem; /* 14px - text-sm */
+}
+
+@media (max-width: 767px) {
+  .responsive-text-sm {
+    font-size: 0.75rem; /* 12px - text-xs */
+  }
+}
+
+/**
+ * Responsive Padding Utilities
+ * 
+ * These classes automatically adjust padding based on screen size
+ * to optimize space usage on mobile devices.
+ */
+
+/* Responsive card header padding */
+.responsive-card-header {
+  padding-bottom: 0.5rem; /* 8px - pb-2 */
+}
+
+@media (max-width: 767px) {
+  .responsive-card-header {
+    padding: 0.75rem; /* 12px - p-3 */
+  }
+}
+
+/* Responsive card content padding */
+.responsive-card-content {
+  /* Default padding from card component */
+}
+
+@media (max-width: 767px) {
+  .responsive-card-content {
+    padding: 0.75rem; /* 12px - p-3 */
+    padding-top: 0;
+  }
+}
+
+/* Responsive compact padding */
+.responsive-padding-compact {
+  /* Default: no extra padding */
+}
+
+@media (max-width: 767px) {
+  .responsive-padding-compact {
+    padding: 0.75rem; /* 12px - p-3 */
+  }
+}
+
+/**
+ * Responsive Visibility Utilities
+ * 
+ * These classes control element visibility based on screen size
+ * to optimize content for different devices.
+ */
+
+/* Hide on mobile, show on desktop */
+.hide-mobile {
+  display: inline;
+}
+
+@media (max-width: 767px) {
+  .hide-mobile {
+    display: none;
+  }
+}
+
+/* Show on mobile, hide on desktop */
+.show-mobile {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .show-mobile {
+    display: inline;
+  }
+}
+
+/* Hide on mobile, show inline on small screens and up */
+.hide-mobile-inline {
+  display: inline;
+}
+
+@media (max-width: 639px) {
+  .hide-mobile-inline {
+    display: none;
+  }
+}
+
+@media (min-width: 640px) {
+  .hide-mobile-inline {
+    display: inline;
+  }
+}
+
+/**
+ * Responsive Layout Utilities
+ * 
+ * These classes adjust layout properties based on screen size.
+ */
+
+/* Responsive grid columns */
+.responsive-grid-2-1 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 767px) {
+  .responsive-grid-2-1 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Responsive flex direction */
+.responsive-flex-col {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 767px) {
+  .responsive-flex-col {
+    flex-direction: column;
+  }
+}
+
+/**
+ * Combined Responsive Utilities
+ * 
+ * Pre-composed classes for common responsive patterns
+ * used throughout the dashboard.
+ */
+
+/* Status card title - combines text size and padding */
+.status-card-title {
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500;
+  color: rgb(156 163 175); /* text-gray-400 */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  .status-card-title {
+    font-size: 0.75rem; /* text-xs */
+  }
+}
+
+/* Status card value - responsive font size */
+.status-card-value {
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .status-card-value {
+    font-size: 0.875rem; /* text-sm */
+  }
+}
+
+/* Card header with responsive padding */
+.card-header-responsive {
+  padding-bottom: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  .card-header-responsive {
+    padding: 0.75rem;
+  }
+}
+
+/* Card content with responsive padding */
+.card-content-responsive {
+  /* Inherits from card component */
+}
+
+@media (max-width: 767px) {
+  .card-content-responsive {
+    padding: 0.75rem;
+    padding-top: 0;
+  }
+}

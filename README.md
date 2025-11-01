@@ -43,7 +43,7 @@ Un panel de control moderno y completo para finanzas descentralizadas (DeFi) con
 src/
 ├── components/          # Atomic Design Architecture
 │   ├── atoms/          # Componentes básicos (StatusIndicator)
-│   ├── molecules/      # Componentes compuestos (PositionCard, PoolRow)
+│   ├── molecules/      # Componentes compuestos (PositionCard, PoolRow, ValueCard, FeatureCard)
 │   ├── organisms/      # Secciones complejas (SwapInterface, UserPositions)
 │   ├── ui/            # Sistema shadcn/ui (40+ componentes)
 │   └── shared/        # Componentes compartidos
@@ -51,9 +51,13 @@ src/
 │   ├── Dashboard.tsx  # Panel principal con métricas
 │   ├── Stake.tsx      # Sistema de staking
 │   ├── Swap.tsx       # Interfaz de intercambio
+│   ├── AboutUs.tsx    # Página About Us con info del proyecto
 │   └── ...           # Más páginas
 ├── hooks/             # Custom React hooks
 ├── lib/              # Utilidades y datos mock
+│   ├── mockData.ts    # Datos para Dashboard y Assets
+│   ├── aboutData.ts   # Datos para página About Us
+│   └── utils.ts       # Funciones utilitarias
 └── tests/            # Configuración de testing
 ```
 
@@ -124,6 +128,14 @@ bun run lint         # Linting con ESLint
 - **Recent Decisions**: Historial de operaciones
 - **Controls**: Pause/Resume, configuración de riesgo
 
+### ℹ️ About Us (`/about`)
+- **Hero Section**: Misión y visión de OctoFi
+- **Platform Overview**: Historia desde 2020, enfoque community-driven
+- **AI Features**: 4 características del agente AI (Market Analysis, Auto Reallocation, Risk Management, Autonomous Trading)
+- **Community & Governance**: Participación en propuestas, airdrops, y social links
+- **Core Values**: Decentralization, AI Innovation, Security First, Community First
+- **Call to Action**: Links a Dashboard y comunidad
+
 ## 🎨 Sistema de Diseño
 
 ### Colores (HSL)
@@ -191,6 +203,26 @@ bun run preview
 - **Prettier**: Formateo automático
 - **TypeScript**: Tipado estricto sin `any`
 - **Atomic Design**: Organización de componentes
+
+## 📚 Componentes Destacados
+
+### ValueCard (Molecule)
+Componente reutilizable para mostrar valores y principios con:
+- Icon personalizable con colores accent
+- Título y descripción
+- Hover effects y transiciones
+- Optimizado con React.memo
+
+### FeatureCard (Molecule)
+Componente para características AI con:
+- Icon con background accent
+- Título, descripción y highlights opcionales
+- Lista de bullet points
+- Optimizado con React.memo
+
+### Datos Mock
+- **mockData.ts**: Datos para Dashboard (ETH, OCTO, DAI)
+- **aboutData.ts**: Contenido completo para About Us page con interfaces TypeScript
 
 ## 📄 Licencia
 

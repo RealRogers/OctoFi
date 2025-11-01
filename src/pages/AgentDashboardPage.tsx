@@ -1,5 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useState, useCallback } from "react";
 import AppLayout from "@/components/AppLayout";
 import AgentControls from "@/components/molecules/AgentControls";
 import AgentAuditTrail from "@/components/molecules/AgentAuditTrail";
@@ -9,11 +8,10 @@ import PerformanceComparison from "@/components/molecules/PerformanceComparison"
 import PerformanceChart from "@/components/organisms/PerformanceChart";
 import { useTradingAgent } from "@/hooks/useTradingAgent";
 import { useSwapStore } from "@/services/store";
-import { tradingAgentService } from "@/services/tradingAgentService";
-import { aiRecommendationsService } from "@/services/aiRecommendationsService";
-import { AIRecommendation } from "@/services/types";
-import { useToast } from "@/components/ui/use-toast";
-import { Button } from "@/components/ui/button";
+import { useAgentNotifications } from "@/hooks/useAgentNotifications";
+import { useRecommendations } from "@/hooks/useRecommendations";
+import { usePerformanceData } from "@/hooks/usePerformanceData";
+import { useAssetAllocation } from "@/hooks/useAssetAllocation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AnimatedCard } from "@/components/ui/animated-card";
 import { AnimatedNumber } from "@/components/ui/animated-number";
@@ -22,187 +20,64 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Toaster } from "@/components/ui/toaster";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { useMobile } from "@/hooks/useMobile";
-import { Bot, Activity, TrendingUp, Shield, Info, CheckCircle, XCircle, AlertTriangle, Settings, Brain, Clock } from "lucide-react";
+import { Bot, Activity, TrendingUp, Shield, Info, Settings, Brain, Clock, Sparkles, RefreshCw, BarChart3 } from "lucide-react";
+import { ANIMATION_DELAYS, BREAKPOINTS } from "@/constants/dashboard";
+import { EmptyState } from "@/components/ui/empty-state";
+import { isValidPerformanceData, isValidStrategy } from "@/utils/validators";
+import { logWarning } from "@/utils/errorHandling";
 
 const AgentDashboardPage = () => {
   const { isActive, strategy, performance, canExecuteTrades, refreshPerformance } = useTradingAgent()
   const { fromToken, toToken } = useSwapStore()
-  const { toast } = useToast()
   const [timeframe, setTimeframe] = useState<'24h' | '7d' | '30d' | 'all'>('7d')
-  const [recommendations, setRecommendations] = useState<AIRecommendation[]>([])
-  const isMobile = useMobile(1280) // xl breakpoint
+  const isMobile = useMobile(BREAKPOINTS.DESKTOP)
   
   const tokenPair = fromToken && toToken ? { fromToken, toToken } : undefined
 
-  // Subscribe to agent actions for toast notifications
-  useEffect(() => {
-    const subscription = tradingAgentService.subscribeToActions((action) => {
-      // Determine toast content based on action type and result
-      if (action.result === 'success') {
-        switch (action.type) {
-          case 'swap':
-            const swapData = action.data as any
-            if (swapData?.type === 'optimization') {
-              toast({
-                title: "🤖 Portfolio Optimized",
-                description: "AI agent successfully optimized your portfolio allocation",
-                variant: "default",
-              })
-            } else if (swapData?.type === 'rebalancing') {
-              toast({
-                title: "⚖️ Portfolio Rebalanced", 
-                description: "AI agent rebalanced your portfolio to maintain target allocation",
-                variant: "default",
-              })
-            } else {
-              toast({
-                title: "✅ Trade Executed",
-                description: `Successfully completed ${action.type} operation`,
-                variant: "default",
-              })
-            }
-            break
-          case 'resume':
-            toast({
-              title: "🚀 Agent Activated",
-              description: "AI trading agent is now active and monitoring markets",
-              variant: "default",
-            })
-            break
-          case 'pause':
-            const pauseReason = (action.data as any)?.reason
-            toast({
-              title: "⏸️ Agent Paused",
-              description: pauseReason || "AI trading agent has been paused",
-              variant: "default",
-            })
-            break
-          case 'strategy_change':
-            toast({
-              title: "⚙️ Strategy Updated",
-              description: "Trading strategy has been successfully updated",
-              variant: "default",
-            })
-            break
-          default:
-            toast({
-              title: "🤖 Action Complete",
-              description: `Successfully completed ${action.type}`,
-              variant: "default",
-            })
-        }
-      } else if (action.result === 'failure') {
-        toast({
-          title: "❌ Action Failed",
-          description: action.error || `Failed to complete ${action.type}`,
-          variant: "destructive",
-        })
-      }
-    })
-
-    return () => subscription.unsubscribe()
-  }, [toast])
-
-  // Subscribe to AI recommendations
-  useEffect(() => {
-    const unsubscribe = aiRecommendationsService.subscribe((newRecommendations) => {
-      setRecommendations(newRecommendations)
-    })
-
-    return unsubscribe
-  }, [])
-
-  // Generate recommendations based on current strategy and performance
-  useEffect(() => {
-    if (strategy && performance) {
-      const strategyRecommendations = aiRecommendationsService.generateRecommendationsForStrategy(strategy)
-      const performanceRecommendations = aiRecommendationsService.generateRecommendationsForPerformance(performance)
-      
-      // Add new recommendations (they will be filtered by the service)
-      strategyRecommendations.forEach(rec => {
-        if (!recommendations.find(existing => existing.title === rec.title)) {
-          // This would normally be handled by the service, but for demo we'll just update state
-        }
-      })
-    }
-  }, [strategy, performance])
-
-  // Handle recommendation actions
-  const handleApplyRecommendation = async (recommendation: AIRecommendation) => {
-    try {
-      await aiRecommendationsService.applyRecommendation(recommendation.id)
-      
-      // Apply the recommendation action
-      if (recommendation.action) {
-        switch (recommendation.action.type) {
-          case 'strategy_update':
-            // Update strategy through trading agent service
-            await tradingAgentService.updateStrategy({
-              ...strategy,
-              ...recommendation.action.payload
-            })
-            break
-          case 'pause_agent':
-            await tradingAgentService.disable()
-            break
-          case 'rebalance':
-            await tradingAgentService.forceRebalance?.()
-            break
-          // Add other action types as needed
-        }
-      }
-    } catch (error) {
-      throw error // Re-throw to be handled by the component
-    }
-  }
-
-  const handleDismissRecommendation = (recommendationId: string) => {
-    aiRecommendationsService.dismissRecommendation(recommendationId)
-  }
-
-  const handleRefreshRecommendations = () => {
-    // Force refresh recommendations
-    setRecommendations(aiRecommendationsService.getRecommendations('pending'))
-  }
-
-  // Real-time polling for performance data
-  const { data: livePerformance } = useQuery({
-    queryKey: ['agent-performance'],
-    queryFn: async () => {
-      return await refreshPerformance()
-    },
-    refetchInterval: 10000, // Poll every 10 seconds
-    enabled: isActive
+  // Use custom hooks for business logic
+  useAgentNotifications()
+  
+  const {
+    recommendations,
+    isLoading: isLoadingRecommendations,
+    applyRecommendation,
+    dismissRecommendation,
+    refreshRecommendations,
+  } = useRecommendations({
+    strategy,
+    performance,
+    autoGenerate: true,
   })
 
-  // Generate mock historical data for the chart
-  const performanceData = useMemo(() => {
-    const now = new Date()
-    const data = []
-    const days = timeframe === '24h' ? 1 : timeframe === '7d' ? 7 : timeframe === '30d' ? 30 : 90
-    const points = timeframe === '24h' ? 24 : days
-    
-    for (let i = 0; i < points; i++) {
-      const timestamp = new Date(now.getTime() - (points - i) * (timeframe === '24h' ? 3600000 : 86400000))
-      data.push({
-        timestamp,
-        profitLoss: (performance?.totalProfitLoss || 0) * (i / points) + Math.random() * 100 - 50,
-        trades: Math.floor(Math.random() * 5),
-        winRate: 50 + Math.random() * 30,
-        balance: 10000 + (performance?.totalProfitLoss || 0) * (i / points)
-      })
-    }
-    return data
-  }, [performance, timeframe])
+  const {
+    data: performanceData,
+    livePerformance,
+    isLoading: isLoadingPerformance,
+  } = usePerformanceData({
+    timeframe,
+    isActive,
+    refreshPerformance,
+  })
 
-  // Asset allocation data
-  const assetAllocation = useMemo(() => [
-    { name: 'ETH', value: 45, color: '#3b82f6' },
-    { name: 'BTC', value: 30, color: '#f59e0b' },
-    { name: 'USDC', value: 15, color: '#10b981' },
-    { name: 'Other', value: 10, color: '#8b5cf6' }
-  ], [])
+  const {
+    allocation: assetAllocation,
+    isLoading: isLoadingAllocation,
+  } = useAssetAllocation()
 
+  // Memoized callbacks
+  const handleApplyRecommendation = useCallback(async (id: string) => {
+    await applyRecommendation(id)
+  }, [applyRecommendation])
+
+  const handleDismissRecommendation = useCallback((id: string) => {
+    dismissRecommendation(id)
+  }, [dismissRecommendation])
+
+  const handleRefreshRecommendations = useCallback(() => {
+    refreshRecommendations()
+  }, [refreshRecommendations])
+
+  // Helper functions
   const getStatusColor = () => {
     if (!canExecuteTrades()) return 'text-gray-400'
     return isActive ? 'text-green-400' : 'text-yellow-400'
@@ -213,16 +88,39 @@ const AgentDashboardPage = () => {
     return isActive ? 'Active & Trading' : 'Ready'
   }
 
+  // Validate and use live performance if available, otherwise fall back to cached
+  const rawPerformance = livePerformance || performance
+  
+  // Validate performance data before using it
+  const currentPerformance = rawPerformance && isValidPerformanceData(rawPerformance) 
+    ? rawPerformance 
+    : null
+  
+  // Log warning if performance data is invalid
+  if (rawPerformance && !currentPerformance) {
+    logWarning('Invalid performance data received', { rawPerformance })
+  }
+  
+  // Validate strategy data
+  const validatedStrategy = strategy && isValidStrategy(strategy) 
+    ? strategy 
+    : null
+  
+  // Log warning if strategy data is invalid
+  if (strategy && !validatedStrategy) {
+    logWarning('Invalid strategy data received', { strategy })
+  }
+
   return (
     <AppLayout>
       <Toaster />
       <div className="space-y-6">
         {/* Header */}
         <div className="text-center">
-          <h1 className={`font-bold text-white mb-2 ${isMobile ? 'text-xl' : 'text-3xl'}`}>
+          <h1 className="responsive-heading text-white mb-2">
             {isMobile ? 'AI Agent Dashboard' : 'AI Trading Agent Dashboard'}
           </h1>
-          <p className={`text-gray-400 ${isMobile ? 'text-sm' : ''}`}>
+          <p className="responsive-subheading text-gray-400">
             {isMobile ? 'Monitor and control your AI agent' : 'Monitor and control your autonomous trading agent'}
           </p>
         </div>
@@ -230,101 +128,103 @@ const AgentDashboardPage = () => {
         {/* Status Overview */}
         <TooltipProvider>
           <div className={`grid gap-4 ${isMobile ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-4'}`}>
-            <AnimatedCard delay={0.1}>
-              <CardHeader className={`pb-2 ${isMobile ? 'p-3' : ''}`}>
-                <CardTitle className={`text-sm font-medium text-gray-400 flex items-center gap-2 ${isMobile ? 'text-xs' : ''}`}>
+            <AnimatedCard delay={ANIMATION_DELAYS.STATUS_CARD_1}>
+              <CardHeader className="card-header-responsive">
+                <CardTitle className="status-card-title">
                   <Bot className="w-4 h-4" />
-                  <span className={isMobile ? 'hidden sm:inline' : ''}>Agent Status</span>
+                  <span className="hide-mobile-inline">Agent Status</span>
                   <Tooltip>
-                    <TooltipTrigger>
+                    <TooltipTrigger aria-label="More information about agent status">
                       <Info className="w-3 h-3 text-gray-500" />
                     </TooltipTrigger>
-                    <TooltipContent>
+                    <TooltipContent role="tooltip">
                       <p className="text-xs max-w-xs">Current operational status of your AI trading agent</p>
                     </TooltipContent>
                   </Tooltip>
                 </CardTitle>
               </CardHeader>
-              <CardContent className={isMobile ? 'p-3 pt-0' : ''}>
+              <CardContent className="card-content-responsive">
                 <div className="flex items-center gap-2">
                   <div className={`w-2 h-2 rounded-full ${isActive ? 'bg-green-400 animate-pulse' : 'bg-gray-400'}`} />
-                  <span className={`font-semibold ${getStatusColor()} ${isMobile ? 'text-sm' : ''}`}>
+                  <span className={`status-card-value ${getStatusColor()}`}>
                     {getStatusText()}
                   </span>
                 </div>
               </CardContent>
             </AnimatedCard>
 
-            <AnimatedCard delay={0.2}>
-              <CardHeader className={`pb-2 ${isMobile ? 'p-3' : ''}`}>
-                <CardTitle className={`text-sm font-medium text-gray-400 flex items-center gap-2 ${isMobile ? 'text-xs' : ''}`}>
+            <AnimatedCard delay={ANIMATION_DELAYS.STATUS_CARD_2}>
+              <CardHeader className="card-header-responsive">
+                <CardTitle className="status-card-title">
                   <Shield className="w-4 h-4" />
-                  <span className={isMobile ? 'hidden sm:inline' : ''}>Strategy</span>
+                  <span className="hide-mobile-inline">Strategy</span>
                   <Tooltip>
-                    <TooltipTrigger>
+                    <TooltipTrigger aria-label="More information about strategy">
                       <Info className="w-3 h-3 text-gray-500" />
                     </TooltipTrigger>
-                    <TooltipContent>
+                    <TooltipContent role="tooltip">
                       <p className="text-xs max-w-xs">Current risk strategy configured for your agent</p>
                     </TooltipContent>
                   </Tooltip>
                 </CardTitle>
               </CardHeader>
-              <CardContent className={isMobile ? 'p-3 pt-0' : ''}>
-                <span className={`font-semibold text-white capitalize ${isMobile ? 'text-sm' : ''}`}>
-                  {strategy?.riskTolerance || 'Not Set'}
+              <CardContent className="card-content-responsive">
+                <span className="status-card-value text-white capitalize">
+                  {validatedStrategy?.riskTolerance || 'Not Set'}
                 </span>
               </CardContent>
             </AnimatedCard>
 
-            <AnimatedCard delay={0.3}>
-              <CardHeader className={`pb-2 ${isMobile ? 'p-3' : ''}`}>
-                <CardTitle className={`text-sm font-medium text-gray-400 flex items-center gap-2 ${isMobile ? 'text-xs' : ''}`}>
+            <AnimatedCard delay={ANIMATION_DELAYS.STATUS_CARD_3}>
+              <CardHeader className="card-header-responsive">
+                <CardTitle className="status-card-title">
                   <TrendingUp className="w-4 h-4" />
-                  <span className={isMobile ? 'hidden sm:inline' : ''}>Total P&L</span>
+                  <span className="hide-mobile-inline">Total P&L</span>
                   <Tooltip>
-                    <TooltipTrigger>
+                    <TooltipTrigger aria-label="More information about total profit and loss">
                       <Info className="w-3 h-3 text-gray-500" />
                     </TooltipTrigger>
-                    <TooltipContent>
+                    <TooltipContent role="tooltip">
                       <p className="text-xs max-w-xs">Total profit and loss from all agent-executed trades</p>
                     </TooltipContent>
                   </Tooltip>
                 </CardTitle>
               </CardHeader>
-              <CardContent className={isMobile ? 'p-3 pt-0' : ''}>
+              <CardContent className="card-content-responsive">
                 <AnimatedNumber
-                  value={livePerformance?.totalProfitLoss || performance?.totalProfitLoss || 0}
+                  value={currentPerformance?.totalProfitLoss || 0}
                   decimals={2}
                   prefix="$"
-                  className={`font-semibold ${
-                    (livePerformance?.totalProfitLoss || performance?.totalProfitLoss || 0) >= 0 ? 'text-green-400' : 'text-red-400'
-                  } ${isMobile ? 'text-sm' : ''}`}
+                  className={`status-card-value ${
+                    (currentPerformance?.totalProfitLoss || 0) >= 0 ? 'text-green-400' : 'text-red-400'
+                  }`}
+                  ariaLabel={`Total profit and loss: ${(currentPerformance?.totalProfitLoss || 0) >= 0 ? 'positive' : 'negative'} $${Math.abs(currentPerformance?.totalProfitLoss || 0).toFixed(2)}`}
                 />
               </CardContent>
             </AnimatedCard>
 
-            <AnimatedCard delay={0.4}>
-              <CardHeader className={`pb-2 ${isMobile ? 'p-3' : ''}`}>
-                <CardTitle className={`text-sm font-medium text-gray-400 flex items-center gap-2 ${isMobile ? 'text-xs' : ''}`}>
+            <AnimatedCard delay={ANIMATION_DELAYS.STATUS_CARD_4}>
+              <CardHeader className="card-header-responsive">
+                <CardTitle className="status-card-title">
                   <Activity className="w-4 h-4" />
-                  <span className={isMobile ? 'hidden sm:inline' : ''}>Win Rate</span>
+                  <span className="hide-mobile-inline">Win Rate</span>
                   <Tooltip>
-                    <TooltipTrigger>
+                    <TooltipTrigger aria-label="More information about win rate">
                       <Info className="w-3 h-3 text-gray-500" />
                     </TooltipTrigger>
-                    <TooltipContent>
+                    <TooltipContent role="tooltip">
                       <p className="text-xs max-w-xs">Percentage of profitable trades vs total trades</p>
                     </TooltipContent>
                   </Tooltip>
                 </CardTitle>
               </CardHeader>
-              <CardContent className={isMobile ? 'p-3 pt-0' : ''}>
+              <CardContent className="card-content-responsive">
                 <AnimatedNumber
-                  value={livePerformance?.winRate || performance?.winRate || 0}
+                  value={currentPerformance?.winRate || 0}
                   decimals={1}
                   suffix="%"
-                  className={`font-semibold text-white ${isMobile ? 'text-sm' : ''}`}
+                  className="status-card-value text-white"
+                  ariaLabel={`Win rate: ${(currentPerformance?.winRate || 0).toFixed(1)} percent`}
                 />
               </CardContent>
             </AnimatedCard>
@@ -333,7 +233,7 @@ const AgentDashboardPage = () => {
 
         {/* Performance Chart */}
         <ErrorBoundary>
-          <AnimatedCard delay={0.5}>
+          <AnimatedCard delay={ANIMATION_DELAYS.PERFORMANCE_CHART}>
             <PerformanceChart 
               data={performanceData}
               assetAllocation={assetAllocation}
@@ -345,9 +245,9 @@ const AgentDashboardPage = () => {
         </ErrorBoundary>
 
         {/* AI Recommendations */}
-        {recommendations.length > 0 && (
-          <ErrorBoundary>
-            <AnimatedCard delay={0.55}>
+        <ErrorBoundary>
+          <AnimatedCard delay={ANIMATION_DELAYS.RECOMMENDATIONS}>
+            {(recommendations?.length ?? 0) > 0 ? (
               <AIRecommendationsCard
                 recommendations={recommendations}
                 onApplyRecommendation={handleApplyRecommendation}
@@ -356,49 +256,105 @@ const AgentDashboardPage = () => {
                 maxVisible={isMobile ? 3 : 5}
                 showFilters={!isMobile}
               />
-            </AnimatedCard>
-          </ErrorBoundary>
-        )}
+            ) : (
+              <Card className="glass-card-hover">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-purple-400" />
+                    AI Recommendations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <EmptyState
+                    icon={Brain}
+                    title="No Recommendations Available"
+                    description="The AI is currently analyzing market conditions and your trading performance. New recommendations will appear here when opportunities are identified."
+                    action={{
+                      label: "Refresh Recommendations",
+                      onClick: handleRefreshRecommendations,
+                      variant: "default"
+                    }}
+                    size={isMobile ? "sm" : "md"}
+                    glowColor="purple"
+                  />
+                </CardContent>
+              </Card>
+            )}
+          </AnimatedCard>
+        </ErrorBoundary>
 
         {/* Performance Comparison */}
-        {performance && performance.totalTrades > 0 && (
-          <ErrorBoundary>
-            <AnimatedCard delay={0.58}>
+        <ErrorBoundary>
+          <AnimatedCard delay={ANIMATION_DELAYS.COMPARISON}>
+            {currentPerformance && (currentPerformance?.totalTrades ?? 0) > 0 ? (
               <PerformanceComparison
-                performance={livePerformance || performance}
+                performance={currentPerformance}
                 showBenchmarks={!isMobile}
               />
-            </AnimatedCard>
-          </ErrorBoundary>
-        )}
+            ) : (
+              <Card className="glass-card-hover">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-purple-400" />
+                    Performance Comparison
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <EmptyState
+                    icon={TrendingUp}
+                    title="No Trading Data Yet"
+                    description="Performance comparison data will appear here after your AI agent executes its first trade. Start trading to see how your agent performs against market benchmarks."
+                    size={isMobile ? "sm" : "md"}
+                    glowColor="blue"
+                  />
+                </CardContent>
+              </Card>
+            )}
+          </AnimatedCard>
+        </ErrorBoundary>
 
         {/* Main Dashboard Grid - Responsive Layout */}
         {isMobile ? (
           /* Mobile: Tabbed Layout */
-          <AnimatedCard delay={0.6}>
+          <AnimatedCard delay={ANIMATION_DELAYS.CONTROLS}>
             <Tabs defaultValue="controls" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 glass-card">
-                <TabsTrigger value="controls" className="flex items-center gap-2">
+              <TabsList className="grid w-full grid-cols-3 glass-card" role="tablist" aria-label="Dashboard sections">
+                <TabsTrigger 
+                  value="controls" 
+                  className="flex items-center gap-2"
+                  role="tab"
+                  aria-controls="controls-panel"
+                >
                   <Settings className="w-4 h-4" />
                   <span className="hidden sm:inline">Controls</span>
                 </TabsTrigger>
-                <TabsTrigger value="insights" className="flex items-center gap-2">
+                <TabsTrigger 
+                  value="insights" 
+                  className="flex items-center gap-2"
+                  role="tab"
+                  aria-controls="insights-panel"
+                >
                   <Brain className="w-4 h-4" />
                   <span className="hidden sm:inline">AI Insights</span>
                 </TabsTrigger>
-                <TabsTrigger value="history" className="flex items-center gap-2">
+                <TabsTrigger 
+                  value="history" 
+                  className="flex items-center gap-2"
+                  role="tab"
+                  aria-controls="history-panel"
+                >
                   <Clock className="w-4 h-4" />
                   <span className="hidden sm:inline">History</span>
                 </TabsTrigger>
               </TabsList>
               
-              <TabsContent value="controls" className="mt-6">
+              <TabsContent value="controls" className="mt-6" id="controls-panel" role="tabpanel">
                 <ErrorBoundary>
                   <AgentControls />
                 </ErrorBoundary>
               </TabsContent>
               
-              <TabsContent value="insights" className="mt-6">
+              <TabsContent value="insights" className="mt-6" id="insights-panel" role="tabpanel">
                 <ErrorBoundary>
                   {tokenPair ? (
                     <AIInsightsPanel 
@@ -425,7 +381,7 @@ const AgentDashboardPage = () => {
                 </ErrorBoundary>
               </TabsContent>
               
-              <TabsContent value="history" className="mt-6">
+              <TabsContent value="history" className="mt-6" id="history-panel" role="tabpanel">
                 <ErrorBoundary>
                   <AgentAuditTrail />
                 </ErrorBoundary>
@@ -436,12 +392,12 @@ const AgentDashboardPage = () => {
           /* Desktop: Grid Layout */
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
             {/* Agent Controls */}
-            <AnimatedCard delay={0.6} className="xl:col-span-1">
+            <AnimatedCard delay={ANIMATION_DELAYS.CONTROLS} className="xl:col-span-1">
               <AgentControls />
             </AnimatedCard>
 
             {/* AI Insights */}
-            <AnimatedCard delay={0.7} className="xl:col-span-1">
+            <AnimatedCard delay={ANIMATION_DELAYS.INSIGHTS} className="xl:col-span-1">
               {tokenPair ? (
                 <AIInsightsPanel 
                   tokenPair={tokenPair}
@@ -467,14 +423,14 @@ const AgentDashboardPage = () => {
             </AnimatedCard>
 
             {/* Audit Trail */}
-            <AnimatedCard delay={0.8} className="xl:col-span-1">
+            <AnimatedCard delay={ANIMATION_DELAYS.AUDIT} className="xl:col-span-1">
               <AgentAuditTrail />
             </AnimatedCard>
           </div>
         )}
 
         {/* Additional Information */}
-        <AnimatedCard delay={0.9}>
+        <AnimatedCard delay={ANIMATION_DELAYS.INFO}>
           <CardHeader>
             <CardTitle>About Your AI Trading Agent</CardTitle>
           </CardHeader>
