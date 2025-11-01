@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ConnectWalletButton } from "@/components/shared/ConnectWalletButton";
+import AgentStatusIndicator from "@/components/atoms/AgentStatusIndicator";
 import Footer from "@/components/Footer";
 
 interface AppLayoutProps {
@@ -28,6 +29,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     { name: "Agent Dashboard", href: "/agent-dashboard" },
     { name: "Swap", href: "/swap" },
     { name: "Stake", href: "/stake" },
+    { name: "About", href: "/about" },
     { name: "Settings", href: "/settings" }
   ];
 
@@ -70,6 +72,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
             {/* Wallet Button */}
             <div className="flex items-center gap-4">
+              <AgentStatusIndicator className="hidden md:flex" showLabel />
               <ConnectWalletButton className="hidden md:flex bg-gradient-to-r from-primary to-accent hover:shadow-[var(--glow-primary)] transition-all duration-300" />
 
               {/* Mobile menu button */}
@@ -84,7 +87,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="hidden md:flex w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent items-center justify-center hover:shadow-[var(--glow-primary)] transition-all duration-300 cursor-pointer">
-                    <User className="h-5 w-5 text-white" />
+                    <User className="h-5 w-5 text-primary-foreground" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">

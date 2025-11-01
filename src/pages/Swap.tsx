@@ -1,10 +1,10 @@
 import AppLayout from "@/components/AppLayout";
-import SwapInterface from "@/components/organisms/SwapInterface";
+import EnhancedSwapInterface from "@/components/organisms/EnhancedSwapInterface";
 
 const Swap = () => {
   return (
     <AppLayout>
-      <SwapInterface />
+      <EnhancedSwapInterface />
     </AppLayout>
   );
 };

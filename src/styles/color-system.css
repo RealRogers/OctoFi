@@ -1,0 +1,422 @@
+/**
+ * Color Hierarchy System
+ * Consistent color usage based on importance and semantic meaning
+ */
+
+/* ============================================
+   CSS Custom Properties for Colors
+   ============================================ */
+
+:root {
+  /* Text hierarchy colors */
+  --text-primary: hsl(210, 40%, 98%);
+  --text-secondary: hsl(215, 20%, 75%);
+  --text-tertiary: hsl(215, 20%, 65%);
+  --text-quaternary: hsl(215, 20%, 45%);
+  --text-disabled: hsl(215, 20%, 35%);
+
+  /* Status colors */
+  --color-success: hsl(142, 76%, 36%);
+  --color-warning: hsl(38, 92%, 50%);
+  --color-error: hsl(0, 84%, 60%);
+  --color-info: hsl(217, 91%, 60%);
+
+  /* Accent colors */
+  --color-accent-primary: hsl(267, 84%, 65%);
+  --color-accent-secondary: hsl(195, 92%, 58%);
+  --color-accent-tertiary: hsl(142, 76%, 36%);
+
+  /* Background hierarchy */
+  --bg-primary: hsl(220, 40%, 6%);
+  --bg-secondary: hsl(220, 35%, 8%);
+  --bg-tertiary: hsl(220, 30%, 15%);
+  --bg-overlay: hsla(220, 40%, 6%, 0.8);
+
+  /* Border hierarchy */
+  --border-primary: hsl(220, 30%, 18%);
+  --border-secondary: hsla(255, 255%, 255%, 0.1);
+  --border-accent: hsla(267, 84%, 65%, 0.3);
+  --border-focus: hsl(267, 84%, 65%);
+
+  /* Metric colors */
+  --metric-positive: hsl(142, 76%, 36%);
+  --metric-negative: hsl(0, 84%, 60%);
+  --metric-neutral: hsl(215, 20%, 65%);
+  --metric-highlight: hsl(267, 84%, 65%);
+
+  /* Opacity levels */
+  --opacity-disabled: 0.4;
+  --opacity-muted: 0.6;
+  --opacity-subtle: 0.8;
+  --opacity-overlay: 0.9;
+}
+
+/* ============================================
+   Text Color Hierarchy Classes
+   ============================================ */
+
+/* Primary text - Most important content */
+.text-hierarchy-primary {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Secondary text - Important but not primary */
+.text-hierarchy-secondary {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Tertiary text - Supporting information */
+.text-hierarchy-tertiary {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+/* Quaternary text - Least important */
+.text-hierarchy-quaternary {
+  color: var(--text-quaternary);
+  font-weight: 400;
+}
+
+/* Disabled text */
+.text-hierarchy-disabled {
+  color: var(--text-disabled);
+  opacity: var(--opacity-disabled);
+}
+
+/* ============================================
+   Semantic Color Classes
+   ============================================ */
+
+/* Success states */
+.color-success {
+  color: var(--color-success);
+}
+
+.bg-success {
+  background-color: var(--color-success);
+}
+
+.border-success {
+  border-color: var(--color-success);
+}
+
+.bg-success-subtle {
+  background-color: hsla(142, 76%, 36%, 0.1);
+}
+
+/* Warning states */
+.color-warning {
+  color: var(--color-warning);
+}
+
+.bg-warning {
+  background-color: var(--color-warning);
+}
+
+.border-warning {
+  border-color: var(--color-warning);
+}
+
+.bg-warning-subtle {
+  background-color: hsla(38, 92%, 50%, 0.1);
+}
+
+/* Error states */
+.color-error {
+  color: var(--color-error);
+}
+
+.bg-error {
+  background-color: var(--color-error);
+}
+
+.border-error {
+  border-color: var(--color-error);
+}
+
+.bg-error-subtle {
+  background-color: hsla(0, 84%, 60%, 0.1);
+}
+
+/* Info states */
+.color-info {
+  color: var(--color-info);
+}
+
+.bg-info {
+  background-color: var(--color-info);
+}
+
+.border-info {
+  border-color: var(--color-info);
+}
+
+.bg-info-subtle {
+  background-color: hsla(217, 91%, 60%, 0.1);
+}
+
+/* ============================================
+   Accent Color Classes
+   ============================================ */
+
+/* Primary accent (Purple) */
+.color-accent-primary {
+  color: var(--color-accent-primary);
+}
+
+.bg-accent-primary {
+  background-color: var(--color-accent-primary);
+}
+
+.border-accent-primary {
+  border-color: var(--color-accent-primary);
+}
+
+.bg-accent-primary-subtle {
+  background-color: hsla(267, 84%, 65%, 0.1);
+}
+
+/* Secondary accent (Cyan) */
+.color-accent-secondary {
+  color: var(--color-accent-secondary);
+}
+
+.bg-accent-secondary {
+  background-color: var(--color-accent-secondary);
+}
+
+.border-accent-secondary {
+  border-color: var(--color-accent-secondary);
+}
+
+.bg-accent-secondary-subtle {
+  background-color: hsla(195, 92%, 58%, 0.1);
+}
+
+/* ============================================
+   Metric Color Classes
+   ============================================ */
+
+/* Positive metrics (gains, profits) */
+.metric-positive {
+  color: var(--metric-positive);
+  font-weight: 600;
+}
+
+.metric-positive-bg {
+  background-color: hsla(142, 76%, 36%, 0.1);
+  color: var(--metric-positive);
+}
+
+/* Negative metrics (losses, declines) */
+.metric-negative {
+  color: var(--metric-negative);
+  font-weight: 600;
+}
+
+.metric-negative-bg {
+  background-color: hsla(0, 84%, 60%, 0.1);
+  color: var(--metric-negative);
+}
+
+/* Neutral metrics */
+.metric-neutral {
+  color: var(--metric-neutral);
+  font-weight: 500;
+}
+
+/* Highlighted metrics */
+.metric-highlight {
+  color: var(--metric-highlight);
+  font-weight: 700;
+}
+
+/* ============================================
+   Background Hierarchy Classes
+   ============================================ */
+
+.bg-hierarchy-primary {
+  background-color: var(--bg-primary);
+}
+
+.bg-hierarchy-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.bg-hierarchy-tertiary {
+  background-color: var(--bg-tertiary);
+}
+
+.bg-hierarchy-overlay {
+  background-color: var(--bg-overlay);
+}
+
+/* ============================================
+   Border Hierarchy Classes
+   ============================================ */
+
+.border-hierarchy-primary {
+  border-color: var(--border-primary);
+}
+
+.border-hierarchy-secondary {
+  border-color: var(--border-secondary);
+}
+
+.border-hierarchy-accent {
+  border-color: var(--border-accent);
+}
+
+.border-hierarchy-focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px hsla(267, 84%, 65%, 0.2);
+}
+
+/* ============================================
+   Component-Specific Color Classes
+   ============================================ */
+
+/* Hero section colors */
+.hero-status-active {
+  color: var(--color-success);
+  background-color: hsla(142, 76%, 36%, 0.1);
+}
+
+.hero-status-inactive {
+  color: var(--text-quaternary);
+  background-color: hsla(215, 20%, 45%, 0.1);
+}
+
+.hero-status-warning {
+  color: var(--color-warning);
+  background-color: hsla(38, 92%, 50%, 0.1);
+}
+
+/* Card colors */
+.card-primary {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-secondary);
+}
+
+.card-elevated {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-primary);
+}
+
+.card-accent {
+  background-color: var(--bg-secondary);
+  border-left: 4px solid var(--color-accent-primary);
+}
+
+/* Button color variants */
+.btn-primary {
+  background-color: var(--color-accent-primary);
+  color: var(--text-primary);
+  border-color: var(--color-accent-primary);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border-primary);
+}
+
+.btn-success {
+  background-color: var(--color-success);
+  color: var(--text-primary);
+  border-color: var(--color-success);
+}
+
+.btn-danger {
+  background-color: var(--color-error);
+  color: var(--text-primary);
+  border-color: var(--color-error);
+}
+
+/* ============================================
+   Interactive State Colors
+   ============================================ */
+
+/* Hover states */
+.hover-primary:hover {
+  background-color: hsla(267, 84%, 65%, 0.1);
+  color: var(--color-accent-primary);
+}
+
+.hover-secondary:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.hover-success:hover {
+  background-color: hsla(142, 76%, 36%, 0.1);
+  color: var(--color-success);
+}
+
+.hover-danger:hover {
+  background-color: hsla(0, 84%, 60%, 0.1);
+  color: var(--color-error);
+}
+
+/* Focus states */
+.focus-primary:focus {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* Active states */
+.active-primary {
+  background-color: hsla(267, 84%, 65%, 0.2);
+  color: var(--color-accent-primary);
+}
+
+/* ============================================
+   Accessibility Enhancements
+   ============================================ */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: hsl(0, 0%, 100%);
+    --text-secondary: hsl(0, 0%, 85%);
+    --text-tertiary: hsl(0, 0%, 70%);
+    --border-primary: hsl(0, 0%, 50%);
+    --border-secondary: hsl(0, 0%, 30%);
+  }
+
+  .glass-card {
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-primary);
+    backdrop-filter: none;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .color-transition {
+    transition: none !important;
+  }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+/* Opacity utilities */
+.opacity-disabled { opacity: var(--opacity-disabled); }
+.opacity-muted { opacity: var(--opacity-muted); }
+.opacity-subtle { opacity: var(--opacity-subtle); }
+.opacity-overlay { opacity: var(--opacity-overlay); }
+
+/* Color transitions */
+.color-transition {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Text selection colors */
+::selection {
+  background-color: hsla(267, 84%, 65%, 0.3);
+  color: var(--text-primary);
+}
