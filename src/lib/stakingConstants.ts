@@ -13,15 +13,15 @@ import { NetworkConfig } from '@/types/staking'
  * Somnia Testnet configuration
  */
 export const SOMNIA_TESTNET: NetworkConfig = {
-  chainId: 997,
+  chainId: 50312,
   chainName: 'Somnia Testnet',
   nativeCurrency: {
     name: 'Somnia Test Token',
     symbol: 'STT',
     decimals: 18
   },
-  rpcUrls: ['https://testnet.rpc.somnia.network'],
-  blockExplorerUrls: ['https://testnet.explorer.somnia.network']
+  rpcUrls: ['https://dream-rpc.somnia.network'],
+  blockExplorerUrls: ['https://explorer.somnia.network']
 }
 
 // ============================================================================
@@ -34,20 +34,20 @@ export const SOMNIA_TESTNET: NetworkConfig = {
  */
 export const STAKING_POOLS = {
   USDC: {
-    address: '0x1234567890123456789012345678901234567890',
-    token: '0x0987654321098765432109876543210987654321',
+    address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    token: '0x2a57095A0F93d23d03BE23EA926B52C6c30D23bB',
     name: 'USDC Staking Pool',
     symbol: 'USDC'
   },
   USDT: {
-    address: '0x2345678901234567890123456789012345678901',
-    token: '0x1987654321098765432109876543210987654321',
+    address: '0x2345678901234567890123456789012345678901', // TODO: Deploy USDT pool
+    token: '0xa233487B7FB5941Dd81A28A4A547519760BFE89e',
     name: 'USDT Staking Pool',
     symbol: 'USDT'
   },
   ARB: {
-    address: '0x3456789012345678901234567890123456789012',
-    token: '0x2987654321098765432109876543210987654321',
+    address: '0x3456789012345678901234567890123456789012', // TODO: Deploy ARB pool
+    token: '0x160de1ACa29C95E36A9d4ecc0b6d22E72663f030',
     name: 'ARB Staking Pool',
     symbol: 'ARB'
   }
@@ -58,9 +58,9 @@ export const STAKING_POOLS = {
  * TODO: Replace with actual token addresses
  */
 export const TOKEN_ADDRESSES = {
-  USDC: '0x0987654321098765432109876543210987654321',
-  USDT: '0x1987654321098765432109876543210987654321',
-  ARB: '0x2987654321098765432109876543210987654321'
+  USDC: '0x2a57095A0F93d23d03BE23EA926B52C6c30D23bB',
+  USDT: '0xa233487B7FB5941Dd81A28A4A547519760BFE89e',
+  ARB: '0x160de1ACa29C95E36A9d4ecc0b6d22E72663f030'
 } as const
 
 // ============================================================================
@@ -226,7 +226,7 @@ export const CHART_COLORS = [
  */
 export const API_ENDPOINTS = {
   DIA_ORACLE: 'https://api.diadata.org',
-  VERTEX_AI: process.env.VITE_VERTEX_AI_ENDPOINT || '',
+  VERTEX_AI: '', // TODO: Configure Vertex AI endpoint
 } as const
 
 // ============================================================================

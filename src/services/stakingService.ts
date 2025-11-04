@@ -52,7 +52,7 @@ const ERC20_ABI = [
  * Staking Service Class
  */
 class StakingService {
-  private useMockData = true // Set to false when contracts are deployed
+  private useMockData = false // Switched to real contracts - tokens deployed!
   
   // ==========================================================================
   // Mock Data
@@ -412,7 +412,7 @@ class StakingService {
     tokenAddress: string,
     spenderAddress: string,
     amount: string = TRANSACTION_CONFIG.APPROVAL_AMOUNT
-  ): Promise<ethers.providers.TransactionResponse> {
+  ): Promise<ethers.TransactionResponse> {
     try {
       const signer = blockchainService.getSigner()
       if (!signer) {
@@ -438,7 +438,7 @@ class StakingService {
    * @param amount - Amount to stake (in token units)
    * @returns Transaction response
    */
-  async stake(poolAddress: string, amount: string): Promise<ethers.providers.TransactionResponse> {
+  async stake(poolAddress: string, amount: string): Promise<ethers.TransactionResponse> {
     try {
       const signer = blockchainService.getSigner()
       if (!signer) {
@@ -467,7 +467,7 @@ class StakingService {
    * @param amount - Amount to withdraw (in token units)
    * @returns Transaction response
    */
-  async withdraw(poolAddress: string, amount: string): Promise<ethers.providers.TransactionResponse> {
+  async withdraw(poolAddress: string, amount: string): Promise<ethers.TransactionResponse> {
     try {
       const signer = blockchainService.getSigner()
       if (!signer) {
@@ -495,7 +495,7 @@ class StakingService {
    * @param poolAddress - Pool contract address
    * @returns Transaction response
    */
-  async claimRewards(poolAddress: string): Promise<ethers.providers.TransactionResponse> {
+  async claimRewards(poolAddress: string): Promise<ethers.TransactionResponse> {
     try {
       const signer = blockchainService.getSigner()
       if (!signer) {
