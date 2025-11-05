@@ -52,7 +52,7 @@ const ERC20_ABI = [
  * Staking Service Class
  */
 class StakingService {
-  private useMockData = false // Switched to real contracts - tokens deployed!
+  private useMockData = import.meta.env.VITE_USE_MOCK_DATA === 'true' ? true : false // Use environment variable to control mock data
   
   // ==========================================================================
   // Mock Data

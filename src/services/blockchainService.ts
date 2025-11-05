@@ -71,7 +71,7 @@ class BlockchainService {
         throw new Error('No accounts found')
       }
 
-      this.signer = provider.getSigner()
+      this.signer = await provider.getSigner()
       return accounts[0]
     } catch (error: any) {
       console.error('Error connecting wallet:', error)
@@ -336,7 +336,8 @@ class BlockchainService {
         throw new Error('Provider not initialized')
       }
 
-      return await this.provider.getGasPrice()
+      const feeData = await this.provider.getFeeData()
+      return feeData.gasPrice || 0n
     } catch (error) {
       console.error('Error getting gas price:', error)
       throw new Error('Failed to get gas price')
@@ -369,7 +370,7 @@ class BlockchainService {
       }
 
       return {
-        transactionHash: receipt.transactionHash,
+        transactionHash: receipt.hash,
         blockNumber: receipt.blockNumber,
         blockHash: receipt.blockHash,
         from: receipt.from,
@@ -388,7 +389,7 @@ class BlockchainService {
    * @param txHash - Transaction hash
    * @returns Transaction or null
    */
-  async getTransaction(txHash: string): Promise<ethers.providers.TransactionResponse | null> {
+  async getTransaction(txHash: string): Promise<ethers.TransactionResponse | null> {
     try {
       if (!this.provider) {
         await this.initializeProvider()

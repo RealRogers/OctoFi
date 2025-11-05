@@ -25,29 +25,29 @@ export const SOMNIA_TESTNET: NetworkConfig = {
 }
 
 // ============================================================================
-// Contract Addresses (Mock - Replace with actual deployed contracts)
+// Contract Addresses (Deployed on Somnia Testnet)
 // ============================================================================
 
 /**
  * Staking pool contract addresses on Somnia Testnet
- * TODO: Replace with actual deployed contract addresses
+ * Using environment variables for deployed contract addresses
  */
 export const STAKING_POOLS = {
   USDC: {
-    address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-    token: '0x2a57095A0F93d23d03BE23EA926B52C6c30D23bB',
+    address: import.meta.env.VITE_USDC_POOL_ADDRESS || '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    token: import.meta.env.VITE_USDC_ADDRESS || '0x2a57095A0F93d23d03BE23EA926B52C6c30D23bB',
     name: 'USDC Staking Pool',
     symbol: 'USDC'
   },
   USDT: {
-    address: '0x2345678901234567890123456789012345678901', // TODO: Deploy USDT pool
-    token: '0xa233487B7FB5941Dd81A28A4A547519760BFE89e',
+    address: import.meta.env.VITE_USDT_POOL_ADDRESS || '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+    token: import.meta.env.VITE_USDT_ADDRESS || '0xa233487B7FB5941Dd81A28A4A547519760BFE89e',
     name: 'USDT Staking Pool',
     symbol: 'USDT'
   },
   ARB: {
-    address: '0x3456789012345678901234567890123456789012', // TODO: Deploy ARB pool
-    token: '0x160de1ACa29C95E36A9d4ecc0b6d22E72663f030',
+    address: import.meta.env.VITE_ARB_POOL_ADDRESS || '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
+    token: import.meta.env.VITE_ARB_ADDRESS || '0x160de1ACa29C95E36A9d4ecc0b6d22E72663f030',
     name: 'ARB Staking Pool',
     symbol: 'ARB'
   }
@@ -55,12 +55,12 @@ export const STAKING_POOLS = {
 
 /**
  * Token contract addresses on Somnia Testnet
- * TODO: Replace with actual token addresses
+ * Using environment variables for deployed token addresses
  */
 export const TOKEN_ADDRESSES = {
-  USDC: '0x2a57095A0F93d23d03BE23EA926B52C6c30D23bB',
-  USDT: '0xa233487B7FB5941Dd81A28A4A547519760BFE89e',
-  ARB: '0x160de1ACa29C95E36A9d4ecc0b6d22E72663f030'
+  USDC: import.meta.env.VITE_USDC_ADDRESS || '0x2a57095A0F93d23d03BE23EA926B52C6c30D23bB',
+  USDT: import.meta.env.VITE_USDT_ADDRESS || '0xa233487B7FB5941Dd81A28A4A547519760BFE89e',
+  ARB: import.meta.env.VITE_ARB_ADDRESS || '0x160de1ACa29C95E36A9d4ecc0b6d22E72663f030'
 } as const
 
 // ============================================================================

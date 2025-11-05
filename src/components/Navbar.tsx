@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Wallet, Menu } from "lucide-react";
 import { useState } from "react";
-import { ConnectWalletButton } from "@/components/shared/ConnectWalletButton";
+import { ConnectWalletButton, ConnectWalletButtonCompact } from "@/components/shared/ConnectWalletButton";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -9,10 +9,12 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const navLinks = [
-    { name: "Features", href: "#features", isExternal: true },
-    { name: "How it Works", href: "#how-it-works", isExternal: true },
-    { name: "Documentation", href: "https://docs.octofi.com", isExternal: true },
-    { name: "About", href: "/about", isExternal: false }
+    { name: "Dashboard", href: "/dashboard", isExternal: false },
+    { name: "Stake", href: "/stake", isExternal: false },
+    { name: "Swap", href: "/swap", isExternal: false },
+    { name: "Agent", href: "/agent-dashboard", isExternal: false },
+    { name: "About", href: "/about", isExternal: false },
+    { name: "Web3 Test", href: "/web3-test", isExternal: false }
   ];
 
   const handleNavClick = (link: typeof navLinks[0]) => {
@@ -70,11 +72,11 @@ const Navbar = () => {
           
           {/* CTA Button and User Avatar */}
           <div className="hidden md:flex items-center gap-4">
-            <ConnectWalletButton />
+            <ConnectWalletButtonCompact />
             <div className="h-9 w-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden">
-              <img 
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
-                alt="User Avatar" 
+              <img
+                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
+                alt="User Avatar"
                 className="h-full w-full object-cover"
               />
             </div>

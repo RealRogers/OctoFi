@@ -373,10 +373,10 @@ export const isValidAddress = (address: string): boolean => {
  */
 export const getExplorerUrl = (hash: string, chainId: number = SOMNIA_TESTNET.chainId): string => {
   const explorers: Record<number, string> = {
-    997: SOMNIA_TESTNET.blockExplorerUrls[0]
+    50312: SOMNIA_TESTNET.blockExplorerUrls[0]
   }
   
-  const baseUrl = explorers[chainId] || explorers[997]
+  const baseUrl = explorers[chainId] || explorers[50312]
   return `${baseUrl}/tx/${hash}`
 }
 
@@ -388,10 +388,10 @@ export const getExplorerUrl = (hash: string, chainId: number = SOMNIA_TESTNET.ch
  */
 export const getAddressExplorerUrl = (address: string, chainId: number = SOMNIA_TESTNET.chainId): string => {
   const explorers: Record<number, string> = {
-    997: SOMNIA_TESTNET.blockExplorerUrls[0]
+    50312: SOMNIA_TESTNET.blockExplorerUrls[0]
   }
   
-  const baseUrl = explorers[chainId] || explorers[997]
+  const baseUrl = explorers[chainId] || explorers[50312]
   return `${baseUrl}/address/${address}`
 }
 
